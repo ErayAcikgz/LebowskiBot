@@ -1,0 +1,54 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "e40251c9-88fd-4d15-bba2-e7683b79e440")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 0.0762 2.458)
+		(size 34.29 21.59)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "fe5d5d0b-d87c-4056-9b09-e3275886210d")
+		(property "Sheetname" "07_LIMIT_HOME"
+			(at 0.0762 1.7464 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "07limitHome.kicad_sch"
+			(at 0.0762 24.6326 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "KiCad"
+				(path "/c15a5ead-c9b6-4302-96cb-0cea8ac8d91c"
+					(page "6")
+				)
+			)
+		)
+	)
+)
