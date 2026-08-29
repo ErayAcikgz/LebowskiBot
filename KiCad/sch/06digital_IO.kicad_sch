@@ -32,7 +32,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "07limitHome.kicad_sch"
+		(property "Sheetfile" "sch/07limitHome.kicad_sch"
 			(at 0.0762 24.6326 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -44,9 +44,14 @@
 			)
 		)
 		(instances
+			(project ""
+				(path "/512f3945-676f-4dfb-afc3-4a82ab9dfae9"
+					(page "")
+				)
+			)
 			(project "KiCad"
-				(path "/c15a5ead-c9b6-4302-96cb-0cea8ac8d91c"
-					(page "6")
+				(path "/c15a5ead-c9b6-4302-96cb-0cea8ac8d91c/512f3945-676f-4dfb-afc3-4a82ab9dfae9"
+					(page "9")
 				)
 			)
 		)

@@ -32,7 +32,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "09safety.kicad_sch"
+		(property "Sheetfile" "sch/09safety.kicad_sch"
 			(at 111.76 104.7246 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -78,7 +78,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "02masterController.kicad_sch"
+		(property "Sheetfile" "sch/02masterController.kicad_sch"
 			(at 63.5 112.3446 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -124,7 +124,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "03servoDriver.kicad_sch"
+		(property "Sheetfile" "sch/03servoDriver.kicad_sch"
 			(at 109.22 39.9546 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -170,7 +170,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "01power.kicad_sch"
+		(property "Sheetfile" "sch/01power.kicad_sch"
 			(at 29.21 113.6146 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -216,7 +216,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "06digital_IO.kicad_sch"
+		(property "Sheetfile" "sch/06digital_IO.kicad_sch"
 			(at 109.22 64.0846 0)
 			(show_name no)
 			(do_not_autoplace no)
