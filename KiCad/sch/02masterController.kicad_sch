@@ -1,0 +1,110 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "39ba2e54-0aa6-4753-bdbe-caa424182069")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 20.3962 22.778)
+		(size 80.01 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "836574b5-d847-4e17-a41d-019d09409f1b")
+		(property "Sheetname" "08_PC_INTEFACE"
+			(at 20.3962 22.0664 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sch/08pcInterface.kicad_sch"
+			(at 20.3962 43.6826 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project ""
+				(path "/1246fd68-e73a-4085-846a-66239a10b3d2"
+					(page "")
+				)
+			)
+			(project "KiCad"
+				(path "/c15a5ead-c9b6-4302-96cb-0cea8ac8d91c/1246fd68-e73a-4085-846a-66239a10b3d2"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 40.7162 62.148)
+		(size 38.1 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "b0d0d93c-d3e9-4c83-b20b-74d54694e4e8")
+		(property "Sheetname" "05_COMMUNICATION"
+			(at 40.7162 61.4364 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sch/05communication.kicad_sch"
+			(at 40.7162 77.9726 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project ""
+				(path "/1246fd68-e73a-4085-846a-66239a10b3d2"
+					(page "")
+				)
+			)
+			(project "KiCad"
+				(path "/c15a5ead-c9b6-4302-96cb-0cea8ac8d91c/1246fd68-e73a-4085-846a-66239a10b3d2"
+					(page "6")
+				)
+			)
+		)
+	)
+)
