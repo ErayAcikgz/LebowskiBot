@@ -1,0 +1,30 @@
+# CMake build directories and generated files
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# Qt Creator
+*.pro.user
+*.pro.user.*
+.qtc_clangd/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Compiled binaries and object files
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+*.exe
+Lebowski
