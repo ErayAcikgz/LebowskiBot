@@ -22,6 +22,14 @@ add_executable(Lebowski
     src/ui/NavigationPanel.h
     src/ui/BottomStatusBar.cpp
     src/ui/BottomStatusBar.h
+    src/ui/widgets/Panel.cpp
+    src/ui/widgets/Panel.h
+    src/ui/widgets/StatusIndicator.cpp
+    src/ui/widgets/StatusIndicator.h
+    src/ui/widgets/ValueRow.cpp
+    src/ui/widgets/ValueRow.h
+    src/ui/widgets/JointStatusWidget.cpp
+    src/ui/widgets/JointStatusWidget.h
     src/pages/OverviewPage.cpp
     src/pages/OverviewPage.h
     src/pages/PlaceholderPage.cpp

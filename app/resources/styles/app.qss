@@ -1,8 +1,8 @@
-/* Lebowski palette: primary #222831, secondary #393E46,
-   muted accent #948979, light accent #DFD0B8. */
+/* Lebowski palette: application background #181C22, primary #222831,
+   secondary #393E46, muted accent #948979, light accent #DFD0B8. */
 
 QWidget {
-    background-color: #222831;
+    background-color: #181C22;
     color: #DFD0B8;
     font-family: "DejaVu Sans";
     font-size: 13px;
@@ -77,7 +77,7 @@ QWidget {
 }
 
 #pageStack {
-    background-color: #222831;
+    background-color: #181C22;
 }
 
 #pageTitle {
@@ -89,6 +89,77 @@ QWidget {
 #pageDescription {
     color: #948979;
     font-size: 14px;
+}
+
+#overviewPanel {
+    background-color: #393E46;
+    border: 1px solid #5b554d;
+    border-radius: 6px;
+}
+
+#panelTitle {
+    color: #948979;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+#panelDivider {
+    background-color: #514d47;
+    border: none;
+}
+
+#statusIndicator {
+    min-height: 24px;
+}
+
+#statusDot {
+    background-color: #948979;
+    border-radius: 4px;
+}
+
+#statusIndicator[tone="safety"] #statusDot {
+    background-color: #DFD0B8;
+}
+
+#statusText {
+    color: #DFD0B8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#safetyLabel {
+    color: #948979;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    margin-top: 8px;
+}
+
+#valueRow {
+    min-height: 24px;
+}
+
+#valueLabel {
+    color: #948979;
+}
+
+#valueText {
+    color: #DFD0B8;
+    font-weight: 600;
+}
+
+#jointLabel {
+    color: #948979;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+#jointValue {
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 600;
 }
 
 #bottomStatusBar {
