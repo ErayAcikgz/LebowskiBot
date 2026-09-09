@@ -1,0 +1,109 @@
+/* Lebowski palette: primary #222831, secondary #393E46,
+   muted accent #948979, light accent #DFD0B8. */
+
+QWidget {
+    background-color: #222831;
+    color: #DFD0B8;
+    font-family: "DejaVu Sans";
+    font-size: 13px;
+}
+
+#topBar {
+    background-color: #393E46;
+    border-bottom: 1px solid #948979;
+}
+
+#applicationName {
+    color: #DFD0B8;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+#connectionIndicator {
+    background-color: #948979;
+    border-radius: 4px;
+}
+
+#connectionStatus {
+    color: #948979;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#estopStatus {
+    background-color: #3a1e20;
+    border: 1px solid #a34b4c;
+    color: #f07e7e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 7px 12px;
+}
+
+#navigationPanel {
+    background-color: #222831;
+    border-right: 1px solid #948979;
+}
+
+#navigationSection {
+    color: #948979;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    padding-left: 12px;
+}
+
+#navigationButton {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: #948979;
+    padding: 0 14px;
+    text-align: left;
+}
+
+#navigationButton:hover {
+    background-color: #393E46;
+    color: #DFD0B8;
+}
+
+#navigationButton:checked {
+    background-color: #393E46;
+    border-left: 3px solid #DFD0B8;
+    color: #DFD0B8;
+    padding-left: 11px;
+}
+
+#pageStack {
+    background-color: #222831;
+}
+
+#pageTitle {
+    color: #DFD0B8;
+    font-size: 29px;
+    font-weight: 600;
+}
+
+#pageDescription {
+    color: #948979;
+    font-size: 14px;
+}
+
+#bottomStatusBar {
+    background-color: #393E46;
+    border-top: 1px solid #948979;
+    color: #948979;
+    font-size: 11px;
+}
+
+#robotStatus {
+    color: #DFD0B8;
+    font-weight: 600;
+}
+
+#jointStatus {
+    color: #948979;
+    font-family: monospace;
+}

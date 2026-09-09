@@ -16,8 +16,29 @@ add_executable(Lebowski
     src/main.cpp
     src/ui/MainWindow.cpp
     src/ui/MainWindow.h
+    src/ui/TopBar.cpp
+    src/ui/TopBar.h
+    src/ui/NavigationPanel.cpp
+    src/ui/NavigationPanel.h
+    src/ui/BottomStatusBar.cpp
+    src/ui/BottomStatusBar.h
     src/pages/OverviewPage.cpp
     src/pages/OverviewPage.h
+    src/pages/PlaceholderPage.cpp
+    src/pages/PlaceholderPage.h
+    src/pages/ControlPage.cpp
+    src/pages/ControlPage.h
+    src/pages/ProgramPage.cpp
+    src/pages/ProgramPage.h
+    src/pages/TeachPage.cpp
+    src/pages/TeachPage.h
+    src/pages/AIPage.cpp
+    src/pages/AIPage.h
+    src/pages/MonitorPage.cpp
+    src/pages/MonitorPage.h
+    src/pages/SettingsPage.cpp
+    src/pages/SettingsPage.h
+    resources/resources.qrc
 )
 
 target_link_libraries(Lebowski PRIVATE Qt6::Widgets)
