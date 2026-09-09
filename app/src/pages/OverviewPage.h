@@ -1,9 +1,9 @@
 #ifndef LEBOWSKI_OVERVIEWPAGE_H
 #define LEBOWSKI_OVERVIEWPAGE_H
 
-#include <QWidget>
+#include "PlaceholderPage.h"
 
-class OverviewPage final : public QWidget
+class OverviewPage final : public PlaceholderPage
 {
     Q_OBJECT
 
