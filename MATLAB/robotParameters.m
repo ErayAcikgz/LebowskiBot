@@ -30,7 +30,7 @@ toolLength = 0.12;
 baseRadius = 0.14;
 baseHeight = 0.10;
 
-%% Joint Merkez Offsetleri
+% Joint Merkez Offsetleri
 
 j12Offset = [0.04 0 0.02];
 j23Offset = [0.05 0 0];
@@ -39,7 +39,7 @@ j45Offset = [0 0.025 0];
 j56Offset = [0 0 -0.025];
 j6ToolOffset = [0 0 0.03];
 
-%% Joint Housing Geometrisi
+% Joint Housing Geometrisi
 
 joint1Radius = 0.11;
 joint1Width = 0.10;
@@ -62,7 +62,7 @@ joint6Width = 0.07;
 jointRadius = [joint1Radius joint2Radius joint3Radius joint4Radius joint5Radius joint6Radius];
 jointWidth = [joint1Width joint2Width joint3Width joint4Width joint5Width joint6Width];
 
-%% Tool Geometrisi
+% Tool Geometrisi
 
 toolWidth = 0.10;
 toolHeight = 0.07;
@@ -113,7 +113,7 @@ robotKinematics.toolFixedTranslation = toolFrameOffset;
 robotKinematics.toolFixedRotationAxis = [1 0 0];
 robotKinematics.toolFixedRotationAngle = 0;
 
-%% Wrist Parametreleri
+% Wrist Parametreleri
 
 robotKinematics.j4ToWristCenter = [0 0 link4Length];
 
@@ -123,7 +123,7 @@ robotKinematics.wristCenterToTool = ...
 robotKinematics.shoulderLateralOffset = ...
     j23Offset(3) + j34Offset(3) + link4Length;
 
-%% Joint Limitleri
+% Joint Limitleri
 
 robotKinematics.jointLimits = deg2rad([
     -170 170
@@ -148,7 +148,7 @@ singularityParameters.characteristicLength = ...
 
 singularityParameters.sigmaThreshold = 0.05;
 
-%% Workspace Mapping Parametreleri
+% Workspace Mapping Parametreleri
 
 mappingParameters.sampleCount = 20000;
 mappingParameters.randomSeed = 1;
@@ -181,10 +181,39 @@ qDDotBias = zeros(1, jointCount);
 
 homeConfiguration = deg2rad([0 -25 80 0 -35 0]);
 
-%% Uyumluluk Parametreleri
+%% Compatibility
 
 armWidth = 0.08;
 armDepth = 0.08;
 
 wristWidth = 0.06;
 wristDepth = 0.06;
+
+%% Trajectory
+
+% Joint Trajectory
+
+jointTrajectoryStartTime = 0;
+jointTrajectoryEndTime = 5;
+
+qStart = deg2rad([0 -20 60 0 -30 0]).';
+qTarget = deg2rad([40 10 90 -30 20 45]).';
+
+% Cartesian Trajectory
+
+cartesianTrajectoryStartTime = 0;
+cartesianTrajectoryEndTime = 5;
+
+cartesianQStart = deg2rad([0 -20 60 0 -30 0]).';
+cartesianQTarget = deg2rad([30 5 80 20 -40 35]).';
+
+[pStart, RStart, ~] = ...
+    forwardKinematics(cartesianQStart, robotKinematics);
+
+[pTarget, RTarget, ~] = ...
+    forwardKinematics(cartesianQTarget, robotKinematics);
+
+% Motion Parametreleri
+
+motionParameters.damping = 1e-6;
+motionParameters.jacobianDerivativeStep = 1e-6;

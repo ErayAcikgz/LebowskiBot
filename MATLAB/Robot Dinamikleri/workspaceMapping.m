@@ -1,3 +1,6 @@
+% Çalışma uzayındaki robotun çalışma noktalarını gösterir
+% Ayrıca tekillik noktalarını, her noktanın tekillik riskini hesaplar
+
 function workspaceMap = workspaceMapping()
 
 robotParameters;
