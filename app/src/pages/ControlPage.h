@@ -1,9 +1,9 @@
 #ifndef LEBOWSKI_CONTROLPAGE_H
 #define LEBOWSKI_CONTROLPAGE_H
 
-#include "PlaceholderPage.h"
+#include <QWidget>
 
-class ControlPage final : public PlaceholderPage
+class ControlPage final : public QWidget
 {
     Q_OBJECT
 

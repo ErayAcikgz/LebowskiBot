@@ -13,8 +13,10 @@ public:
     explicit Panel(const QString &title, QWidget *parent = nullptr);
 
     QVBoxLayout *contentLayout() const;
+    void setCompact(bool compact);
 
 private:
+    QVBoxLayout *layout_ = nullptr;
     QVBoxLayout *contentLayout_ = nullptr;
 };
 

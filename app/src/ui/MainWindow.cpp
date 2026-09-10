@@ -22,6 +22,9 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint
+                   | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint
+                   | Qt::WindowCloseButtonHint);
     setWindowTitle(QStringLiteral("Lebowski | Robotic Arm Control"));
     resize(1280, 800);
 
@@ -62,4 +65,5 @@ MainWindow::MainWindow(QWidget *parent)
     if (styleSheetFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qApp->setStyleSheet(QString::fromUtf8(styleSheetFile.readAll()));
     }
+
 }
