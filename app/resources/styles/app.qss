@@ -258,6 +258,90 @@ QWidget {
     background-color: #514d47;
 }
 
+#programList,
+#instructionList {
+    background-color: #222831;
+    border: 1px solid #514d47;
+    border-radius: 3px;
+    color: #DFD0B8;
+    outline: none;
+}
+
+#programList::item,
+#instructionList::item {
+    border-bottom: 1px solid #393E46;
+    padding: 7px 8px;
+}
+
+#programList::item:hover,
+#instructionList::item:hover {
+    background-color: #393E46;
+}
+
+#programList::item:selected,
+#instructionList::item:selected {
+    background-color: #514d47;
+    color: #DFD0B8;
+}
+
+#programName {
+    color: #DFD0B8;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#instructionHeading {
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+#instructionSection {
+    color: #948979;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#instructionSpin,
+#instructionSelector {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 3px 6px;
+}
+
+#instructionSpin:focus,
+#instructionSelector:focus {
+    border-color: #DFD0B8;
+}
+
+#instructionSelector QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#instructionInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 5px 7px;
+}
+
+#instructionInput:disabled {
+    border-color: #514d47;
+    color: #948979;
+}
+
+#programStatus {
+    color: #948979;
+    font-size: 11px;
+}
+
 #stopButton {
     background-color: #3a1e20;
     border-color: #a34b4c;
