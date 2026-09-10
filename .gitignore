@@ -11,6 +11,40 @@
 **/*.su
 
 ################################
+# CMake
+################################
+**/build/
+**/cmake-build-*/
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/install_manifest.txt
+**/compile_commands.json
+
+################################
+# Qt Creator and IDEs
+################################
+**/*.pro.user
+**/*.pro.user.*
+**/.qtc_clangd/
+**/.idea/
+**/.vscode/
+**/*.swp
+**/*.swo
+
+################################
+# Compiled binaries and libraries
+################################
+**/*.obj
+**/*.so
+**/*.dll
+**/*.dylib
+**/*.a
+**/*.lib
+**/*.exe
+**/Lebowski
+
+################################
 # STM32CubeIDE / Eclipse
 ################################
 **/.metadata/
