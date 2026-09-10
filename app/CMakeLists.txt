@@ -32,6 +32,8 @@ add_executable(Lebowski
     src/ui/widgets/JointStatusWidget.h
     src/ui/widgets/JointControlWidget.cpp
     src/ui/widgets/JointControlWidget.h
+    src/ui/widgets/InstructionEditorWidget.cpp
+    src/ui/widgets/InstructionEditorWidget.h
     src/ui/widgets/RobotViewWidget.cpp
     src/ui/widgets/RobotViewWidget.h
     src/pages/OverviewPage.cpp
