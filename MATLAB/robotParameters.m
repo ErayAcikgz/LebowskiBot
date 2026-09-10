@@ -1,5 +1,6 @@
 clc, clear;
 addpath(fullfile(fileparts(mfilename("fullpath")), "Robot Dinamikleri"));
+addpath(fullfile(fileparts(mfilename("fullpath")), "Hareket Algoritmaları"));
 
 % Birimler: m, rad, rad/s, rad/s^2
 
