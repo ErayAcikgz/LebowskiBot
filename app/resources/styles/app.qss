@@ -162,6 +162,128 @@ QWidget {
     font-weight: 600;
 }
 
+#controlSlider {
+    min-height: 20px;
+}
+
+#controlSlider::groove:horizontal {
+    height: 4px;
+    background-color: #514d47;
+}
+
+#controlSlider::handle:horizontal {
+    width: 12px;
+    margin: -5px 0;
+    background-color: #DFD0B8;
+    border: 1px solid #948979;
+    border-radius: 6px;
+}
+
+#controlSlider::sub-page:horizontal {
+    background-color: #948979;
+}
+
+#controlValue {
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+#jointInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 600;
+    padding: 3px 6px;
+}
+
+#jointInput:focus {
+    border-color: #DFD0B8;
+}
+
+#stepSelector {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 8px;
+}
+
+#stepSelector::drop-down {
+    border: none;
+    width: 20px;
+}
+
+#stepSelector QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#jogButton {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0;
+}
+
+#jogButton:hover {
+    background-color: #514d47;
+}
+
+#jogButton:pressed {
+    background-color: #393E46;
+}
+
+#secondaryButton,
+#stopButton {
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-weight: 700;
+    padding: 0 16px;
+}
+
+#secondaryButton {
+    background-color: #222831;
+}
+
+#secondaryButton:hover {
+    background-color: #514d47;
+}
+
+#stopButton {
+    background-color: #3a1e20;
+    border-color: #a34b4c;
+    color: #f07e7e;
+}
+
+#stopButton:hover {
+    background-color: #51272a;
+}
+
+#robotView {
+    background-color: #222831;
+    border: 1px dashed #948979;
+}
+
+#robotViewTitle {
+    color: #DFD0B8;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#robotViewStatus {
+    color: #948979;
+    font-size: 12px;
+}
+
 #bottomStatusBar {
     background-color: #393E46;
     border-top: 1px solid #948979;
