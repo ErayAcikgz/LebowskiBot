@@ -288,6 +288,19 @@ QWidget {
     color: #DFD0B8;
 }
 
+#eventsList {
+    background-color: #222831;
+    border: 1px solid #514d47;
+    border-radius: 3px;
+    color: #948979;
+    outline: none;
+    padding: 4px;
+}
+
+#eventsList::item {
+    padding: 7px 8px;
+}
+
 #waypointNameInput {
     background-color: #222831;
     border: 1px solid #948979;

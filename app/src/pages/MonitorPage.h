@@ -1,9 +1,9 @@
 #ifndef LEBOWSKI_MONITORPAGE_H
 #define LEBOWSKI_MONITORPAGE_H
 
-#include "PlaceholderPage.h"
+#include <QWidget>
 
-class MonitorPage final : public PlaceholderPage
+class MonitorPage final : public QWidget
 {
     Q_OBJECT
 
