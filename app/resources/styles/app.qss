@@ -223,6 +223,51 @@ QWidget {
     selection-background-color: #393E46;
 }
 
+#settingsCombo,
+#settingsInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 8px;
+}
+
+#settingsCombo:focus,
+#settingsInput:focus {
+    border-color: #DFD0B8;
+}
+
+#settingsCombo QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#settingsCheckBox {
+    color: #DFD0B8;
+}
+
+#settingsCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 2px;
+}
+
+#settingsCheckBox::indicator:checked {
+    background-color: #948979;
+    border-color: #DFD0B8;
+}
+
+#settingsInformation {
+    color: #948979;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 2px 2px;
+}
+
 #jogButton {
     background-color: #222831;
     border: 1px solid #948979;
