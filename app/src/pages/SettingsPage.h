@@ -1,9 +1,9 @@
 #ifndef LEBOWSKI_SETTINGSPAGE_H
 #define LEBOWSKI_SETTINGSPAGE_H
 
-#include "PlaceholderPage.h"
+#include <QWidget>
 
-class SettingsPage final : public PlaceholderPage
+class SettingsPage final : public QWidget
 {
     Q_OBJECT
 
