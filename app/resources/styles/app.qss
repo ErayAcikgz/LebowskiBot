@@ -259,7 +259,8 @@ QWidget {
 }
 
 #programList,
-#instructionList {
+#instructionList,
+#waypointList {
     background-color: #222831;
     border: 1px solid #514d47;
     border-radius: 3px;
@@ -268,20 +269,40 @@ QWidget {
 }
 
 #programList::item,
-#instructionList::item {
+#instructionList::item,
+#waypointList::item {
     border-bottom: 1px solid #393E46;
     padding: 7px 8px;
 }
 
 #programList::item:hover,
-#instructionList::item:hover {
+#instructionList::item:hover,
+#waypointList::item:hover {
     background-color: #393E46;
 }
 
 #programList::item:selected,
-#instructionList::item:selected {
+#instructionList::item:selected,
+#waypointList::item:selected {
     background-color: #514d47;
     color: #DFD0B8;
+}
+
+#waypointNameInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 6px;
+}
+
+#waypointNameInput:focus {
+    border-color: #DFD0B8;
+}
+
+#poseContext {
+    color: #948979;
+    font-size: 11px;
 }
 
 #programName {
