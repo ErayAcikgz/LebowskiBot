@@ -1,5 +1,5 @@
 function [qDesired, qDotDesired, qDDotDesired] = ...
-    jointSpaceTrajectory(qStart, qTarget, startTime, endTime, currentTime)
+    jointSpaceTrajectory(qStart, qTarget, startTime, endTime, currentTime, motionLimits)
 
 qStart = qStart(:);
 qTarget = qTarget(:);
@@ -10,30 +10,33 @@ qDesired = zeros(jointCount, 1);
 qDotDesired = zeros(jointCount, 1);
 qDDotDesired = zeros(jointCount, 1);
 
-duration = endTime - startTime;
+requestedDuration = endTime - startTime;
 
-if duration <= 0
+if requestedDuration <= 0
     qDesired = qTarget;
     return;
 end
+
+% İstenen trajectory süresini velocity, acceleration ve speedScale
+% değerlerine göre gerekirse otomatik olarak uzatır.
+duration = jointTrajectoryDuration(qStart, qTarget, requestedDuration, motionLimits);
+effectiveEndTime = startTime + duration;
 
 if currentTime <= startTime
     qDesired = qStart;
     return;
 end
 
-if currentTime >= endTime
+if currentTime >= effectiveEndTime
     qDesired = qTarget;
     return;
 end
 
-% Normalize edilmiş zaman: başlangıçta 0, bitişte 1 olur
+% Normalize edilmiş zaman: başlangıçta 0, bitişte 1 olur.
 s = (currentTime - startTime) / duration;
 
-%% Quintic position scaling: pozisyonun zaman içindeki yumuşak geçiş oranı
-% "Hareket süresinin yüzde kaçındayız?"
 % Quintic scaling başlangıç ve bitişte position, velocity ve acceleration
-% sınır şartlarını sağlar
+% sınır şartlarını sağlar:
 % h(0) = 0, h(1) = 1
 % h'(0) = 0, h'(1) = 0
 % h''(0) = 0, h''(1) = 0
@@ -44,12 +47,9 @@ s = (currentTime - startTime) / duration;
 % a0 = 0, a1 = 0, a2 = 0, a3 = 10, a4 = -15, a5 = 6
 % ve sonuç olarak:
 % h(s) = 10*s^3 - 15*s^4 + 6*s^5
+
 positionScale = 10 * s^3 - 15 * s^4 + 6 * s^5;
-
-%% Position scaling'in zamana göre birinci türevi; velocity profilini belirler
 velocityScale = (30 * s^2 - 60 * s^3 + 30 * s^4) / duration;
-
-% Position scaling'in zamana göre ikinci türevi; acceleration profilini belirler
 accelerationScale = (60 * s - 180 * s^2 + 120 * s^3) / duration^2;
 
 jointDifference = qTarget - qStart;

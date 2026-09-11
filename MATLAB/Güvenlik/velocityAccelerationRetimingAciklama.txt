@@ -1,0 +1,1617 @@
+Trajectory generator artık “verilen süreyi körü körüne kullanmıyor”. 
+Önce bu sürede hareket edilirse velocity/acceleration limitleri aşılır mı 
+diye hesaplıyor; gerekiyorsa hareket süresini uzatıyor.
+
+Joint Space
+    ↓
+Joint velocity / acceleration retiming
+
+Cartesian Space
+    ↓
+Linear + angular velocity / acceleration retiming
+
+Cartesian Space
+    ↓
+IK + Jacobian
+    ↓
+Joint velocity / acceleration retiming
+
+# 1. Neden Saturation Kullanmadık?
+
+Normalde şöyle yapmak mümkün görünürdü:
+
+qDotDesired = min(qDotDesired, qDotMax);
+
+Ama bu yanlış olurdu.
+
+Çünkü trajectory'de:
+
+q(t), qDot(t), qDDot(t)
+
+birbirine türev ilişkisiyle bağlı:
+
+qDot = dq/dt
+
+qDDot = d(qDot)/dt
+
+Sen sadece qDotDesired değerini kesersen artık:
+
+qDesired
+qDotDesired
+qDDotDesired
+
+aynı trajectory'yi tarif etmez.
+
+Biz bunun yerine:
+
+Trajectory'nin zamanını değiştiriyoruz.
+
+Yani geometrik hareket aynı kalıyor:
+
+Başlangıç noktası aynı
+Hedef aynı
+Path aynı
+
+ama hareket daha uzun sürede yapılıyor.
+
+# 2. Joint Space İçin Eklediğimiz Limit Parametreleri
+
+robotParameters.m içine:
+
+motionLimits.speedScale = 1.0;
+
+motionLimits.jointVelocityMax = deg2rad([20 20 20 20 20 20]).';
+motionLimits.jointAccelerationMax = deg2rad([40 40 40 40 40 40]).';
+
+ekledik.
+
+Burada:
+
+motionLimits.jointVelocityMax
+
+her joint'in maximum izin verilen velocity'si:
+
+qDotMax
+
+ve:
+
+motionLimits.jointAccelerationMax
+
+maximum acceleration:
+
+qDDotMax
+
+Şu anda kullandığımız:
+
+20 deg/s
+40 deg/s²
+
+değerlerini özellikle testi zorlamak için düşürmüştük. Bunlar final robot limitleri değil.
+
+# 3. jointTrajectoryDuration.m
+
+Bugün Joint Space tarafında eklediğimiz ana fonksiyon buydu.
+
+function trajectoryDuration = jointTrajectoryDuration(qStart, qTarget, requestedDuration, motionLimits)
+
+Fonksiyonun görevi:
+
+qStart → qTarget hareketinin velocity ve acceleration limitlerini aşmadan yapılabileceği minimum süreyi bulmak.
+
+# 4. Girişleri Düzenleme
+
+qStart = qStart(:);
+qTarget = qTarget(:);
+
+Bunların kesin olarak column vector olmasını sağlıyoruz:
+
+q =
+[q1
+ q2
+ ...
+ q6]
+
+# 5. Joint Hareket Miktarı
+
+jointDifference = abs(qTarget - qStart);
+
+Her joint'in toplam ne kadar hareket edeceğini buluyoruz:
+
+|Δqi| = |qtarget,i - qstart,i|
+
+Örneğin J1:
+
+0° → 40°
+
+ise:
+
+|Δq1| = 40°
+
+Burada yön önemli değil. Süre hesabında hareket miktarı önemli olduğu için 
+abs kullanıyoruz.
+
+# 6. Velocity Süresi Nereden Geliyor?
+
+Mevcut Joint Space trajectory'miz quintic:
+
+q(t) = q0 + Δq h(s)
+
+ve:
+
+h(s) = 10s^3 - 15s^4 + 6s^5
+
+Normalize zaman:
+
+s = (t - t0) / T
+
+Burada T trajectory duration.
+
+Türevini alırsak:
+
+h'(s) = 30s^2 - 60s^3 + 30s^4
+
+Bu fonksiyonun maximum değeri:
+
+1.875
+
+ve s = 0.5'te oluşuyor.
+
+Dolayısıyla peak joint velocity:
+
+qDotPeak = 1.875 |Δq| / T
+
+Biz istiyoruz ki:
+
+qDotPeak ≤ qDotMax
+
+Yerine yazarsak:
+
+1.875 |Δq| / T ≤ qDotMax
+
+Buradan süre:
+
+T ≥ 1.875 |Δq| / qDotMax
+
+Kodda bunun karşılığı:
+
+velocityDuration = 1.875 * jointDifference ./ velocityMax;
+
+Burada tek sayı değil, 6 joint için 6 ayrı süre çıkıyor.
+
+Örneğin:
+
+J1 → 2.4 s
+J2 → 1.7 s
+J3 → 2.0 s
+J4 → 1.1 s
+J5 → 2.5 s
+J6 → 1.8 s
+
+gibi.
+
+# 7. Acceleration Süresi
+
+Quintic'in ikinci türevi:
+
+h''(s) = 60s - 180s^2 + 120s^3
+
+Bunun maximum mutlak değeri:
+
+10 / sqrt(3) ≈ 5.7735
+
+Trajectory acceleration:
+
+qDDot = Δq / T^2 * h''(s)
+
+Dolayısıyla:
+
+qDDotPeak = (10 / sqrt(3)) |Δq| / T^2
+
+Limit:
+
+qDDotPeak ≤ qDDotMax
+
+olmalı.
+
+Buradan:
+
+T ≥ sqrt(((10 / sqrt(3)) |Δq|) / qDDotMax)
+
+Kod:
+
+accelerationDuration = sqrt((10 / sqrt(3)) * jointDifference ./ accelerationMax);
+
+Yine 6 joint için 6 ayrı süre çıkıyor.
+
+# 8. En Kısıtlayıcı Joint'i Seçiyoruz
+
+minimumDuration = max([velocityDuration; accelerationDuration]);
+
+Burada toplam 12 değer var:
+
+6 velocity süresi
++
+6 acceleration süresi
+
+Bunların en büyüğünü alıyoruz.
+
+Neden?
+
+Çünkü bütün joint'ler trajectory'yi aynı anda bitirecek.
+
+Mesela J6:
+
+minimum 4 s
+
+istiyorsa diğerlerinin 2 saniyede yapabiliyor olması önemli değil.
+
+Tüm robot:
+
+T ≥ 4 s
+
+ile hareket etmeli.
+
+# 9. Kullanıcının İstediği Süreyle Karşılaştırma
+
+trajectoryDuration = max(requestedDuration, minimumDuration);
+
+Örneğin sen:
+
+requestedDuration = 5 s
+minimumDuration   = 3 s
+
+verdiysen:
+
+trajectoryDuration = 5 s
+
+Çünkü zaten güvenli.
+
+Ama:
+
+requestedDuration = 0.5 s
+minimumDuration   = 3 s
+
+ise:
+
+trajectoryDuration = 3 s
+
+oluyor.
+
+Asıl retiming burada.
+
+# 10. speedScale
+
+Sonra:
+
+speedScale = min(max(motionLimits.speedScale, 1e-6), 1);
+trajectoryDuration = trajectoryDuration / speedScale;
+
+İlk satır speedScale'i güvenli aralıkta tutuyor:
+
+0 < speedScale ≤ 1
+
+Örneğin:
+
+speedScale = 0.5;
+
+ise:
+
+Tnew = T / 0.5 = 2T
+
+Trajectory iki kat uzun sürer.
+
+Velocity:
+
+qDot ∝ 1/T
+
+olduğu için yarıya iner.
+
+Acceleration:
+
+qDDot ∝ 1/T^2
+
+olduğu için dörtte bire iner.
+
+Yani:
+
+speedScale = 0.5
+
+için yaklaşık:
+
+qDotNew = 0.5 qDot
+
+qDDotNew = 0.25 qDDot
+
+# 11. jointSpaceTrajectory.m İçinde Neyi Değiştirdik?
+
+Önceden:
+
+duration = endTime - startTime;
+
+vardı.
+
+Yani kullanıcı ne süre verdiyse trajectory onu kullanıyordu.
+
+Şimdi:
+
+requestedDuration = endTime - startTime;
+
+ile önce kullanıcının talebini alıyoruz.
+
+Sonra:
+
+duration = jointTrajectoryDuration(qStart, qTarget, requestedDuration, motionLimits);
+
+ile:
+
+Bu süre gerçekten güvenli mi?
+
+diye hesaplıyoruz.
+
+Ardından:
+
+effectiveEndTime = startTime + duration;
+
+oluşturduk.
+
+Çünkü artık gerçek bitiş zamanı kullanıcının verdiği endTime olmayabilir.
+
+Örneğin:
+
+startTime          = 0
+requested endTime  = 0.5
+safe duration      = 2.7
+
+ise:
+
+effectiveEndTime = 2.7
+
+olmalı.
+
+Bu yüzden eski:
+
+if currentTime >= endTime
+
+yerine:
+
+if currentTime >= effectiveEndTime
+
+kullanıyoruz.
+
+# 12. Quintic Matematiğinin Geri Kalanı Değişmedi
+
+Hâlâ:
+
+s = (currentTime - startTime) / duration;
+
+ve:
+
+positionScale = 10 * s^3 - 15 * s^4 + 6 * s^5;
+
+velocityScale = (30 * s^2 - 60 * s^3 + 30 * s^4) / duration;
+
+accelerationScale = (60 * s - 180 * s^2 + 120 * s^3) / duration^2;
+
+kullanıyoruz.
+
+Fark şu:
+
+Buradaki duration artık kullanıcının rastgele verdiği süre değil, limitleri sağlayan safe duration.
+
+Sonuç olarak:
+
+qDesired = qStart + jointDifference * positionScale;
+qDotDesired = jointDifference * velocityScale;
+qDDotDesired = jointDifference * accelerationScale;
+
+üçü de birbiriyle tutarlı kalıyor.
+
+# 13. Joint Space Testinde Ne Doğruladık?
+
+Özellikle kısa:
+
+0.5 s
+
+süre verdik.
+
+Planner bunu gerektiğinde uzattı.
+
+Sonra Simulink'ten gerçek trajectory boyunca:
+
+qDotDesired
+qDDotDesired
+
+loglarını aldık.
+
+Ve her joint için:
+
+maxJointVelocity = max(abs(qDotData), [], 2);
+
+ile bütün simülasyon boyunca peak velocity'yi bulduk.
+
+Sonuç:
+
+velocitySafe =
+1
+1
+1
+1
+1
+1
+
+ve acceleration için de bütün joint'ler 1.
+
+Dolayısıyla Joint Space retiming doğrulandı.
+
+# 14. Cartesian Space Tarafında Ne Değişti?
+
+Cartesian trajectory biraz daha farklı çünkü burada dört farklı fiziksel değer var:
+
+v
+
+linear velocity,
+
+a
+
+linear acceleration,
+
+omega
+
+angular velocity,
+
+alpha
+
+angular acceleration.
+
+Bu yüzden yeni limitler:
+
+motionLimits.cartesianLinearVelocityMax = 0.5;
+motionLimits.cartesianLinearAccelerationMax = 1.0;
+
+motionLimits.cartesianAngularVelocityMax = deg2rad(90);
+motionLimits.cartesianAngularAccelerationMax = deg2rad(180);
+
+ekledik.
+
+Birimler:
+
+vMax      → m/s
+aMax      → m/s²
+
+omegaMax  → rad/s
+alphaMax  → rad/s²
+
+# 15. cartesianTrajectoryDuration.m
+
+Bu ikinci yeni duration fonksiyonumuz.
+
+Mantığı Joint Space ile aynı ama:
+
+Joint angle difference
+
+yerine hem Cartesian distance hem orientation angle kullanıyor.
+
+# 16. Position Distance
+
+positionDistance = norm(pTarget - pStart);
+
+Örneğin:
+
+pstart =
+[x0
+ y0
+ z0]
+
+ve:
+
+ptarget =
+[xf
+ yf
+ zf]
+
+ise:
+
+d = sqrt((xf-x0)^2 + (yf-y0)^2 + (zf-z0)^2)
+
+buluyoruz.
+
+Bu Tool'un toplam straight-line Cartesian displacement'ı.
+
+# 17. Orientation İçin Relative Rotation
+
+RRelative = RStart.' * RTarget;
+
+Bu bize:
+
+Başlangıç orientation'ından hedef orientation'a gitmek için ne kadar rotation gerekiyor?
+
+sorusunun cevabını veriyor.
+
+Matematiksel olarak:
+
+Rrelative = Rstart^T * Rtarget
+
+# 18. Rotation Angle
+
+cosRotationAngle = (trace(RRelative) - 1) / 2;
+
+Bir 3D rotation matrix için:
+
+trace(R) = 1 + 2 cos(theta)
+
+olduğu için:
+
+cos(theta) = (trace(R) - 1) / 2
+
+Buradan:
+
+rotationAngle = acos(cosRotationAngle);
+
+ile:
+
+theta
+
+buluyoruz.
+
+Bu Tool'un toplam orientation change miktarı.
+
+# 19. Neden Clamp Var?
+
+cosRotationAngle = min(max(cosRotationAngle, -1), 1);
+
+Teorik olarak:
+
+-1 ≤ cos(theta) ≤ 1
+
+Ama floating-point hesaplardan dolayı:
+
+1.00000000000002
+
+gibi bir değer çıkabilir.
+
+acos(1.00000000000002) geçersiz olur.
+
+Bu yüzden değeri güvenli olarak:
+
+[-1, 1]
+
+arasında tutuyoruz.
+
+# 20. Cartesian Linear Velocity Süresi
+
+Joint tarafındaki formülün aynısı:
+
+vPeak = 1.875 d / T
+
+Dolayısıyla:
+
+linearVelocityDuration = 1.875 * positionDistance / motionLimits.cartesianLinearVelocityMax;
+
+# 21. Cartesian Linear Acceleration Süresi
+
+aPeak = (10 / sqrt(3)) d / T^2
+
+Kod:
+
+linearAccelerationDuration = sqrt((10 / sqrt(3)) * positionDistance / motionLimits.cartesianLinearAccelerationMax);
+
+# 22. Angular Velocity Süresi
+
+Burada distance d yerine rotation angle theta kullanıyoruz:
+
+omegaPeak = 1.875 theta / T
+
+Kod:
+
+angularVelocityDuration = 1.875 * rotationAngle / motionLimits.cartesianAngularVelocityMax;
+
+# 23. Angular Acceleration Süresi
+
+alphaPeak = (10 / sqrt(3)) theta / T^2
+
+Kod:
+
+angularAccelerationDuration = sqrt((10 / sqrt(3)) * rotationAngle / motionLimits.cartesianAngularAccelerationMax);
+
+# 24. Dört Limiti Aynı Anda Sağlayan Süre
+
+minimumDuration = max([linearVelocityDuration, linearAccelerationDuration, angularVelocityDuration, angularAccelerationDuration]);
+
+Yani:
+
+Tmin = max(Tv, Ta, Tomega, Talpha)
+
+Örneğin:
+
+Linear velocity       → 1.2 s
+Linear acceleration   → 0.9 s
+Angular velocity      → 2.4 s
+Angular acceleration  → 1.6 s
+
+ise trajectory:
+
+minimumDuration = 2.4 s
+
+olmalı.
+
+Çünkü angular velocity en kısıtlayıcı değer.
+
+# 25. cartesianSpaceTrajectory.m İçinde Neyi Değiştirdik?
+
+Aynı Joint Space'teki gibi:
+
+requestedDuration = endTime - startTime;
+
+ile istediğimiz süreyi alıyoruz.
+
+Sonra:
+
+duration = cartesianTrajectoryDuration(pStart, RStart, pTarget, RTarget, requestedDuration, motionLimits);
+
+ile güvenli süreyi hesaplıyoruz.
+
+Ardından:
+
+effectiveEndTime = startTime + duration;
+
+oluşturuyoruz.
+
+Dolayısıyla artık:
+
+if currentTime >= effectiveEndTime
+
+kontrol ediliyor.
+
+SLERP veya quaternion kodumuza dokunmadık.
+
+Yani:
+
+Position interpolation
+Orientation SLERP
+
+aynı kaldı.
+
+Sadece kullandıkları time scaling güvenli hale geldi.
+
+# 26. Cartesian Testinde Ne Ölçtük?
+
+Simulink'ten:
+
+vDesired
+omegaDesired
+aDesired
+alphaDesired
+
+logladık.
+
+Sonuçlarımız:
+
+maxLinearVelocity      = 0.0804 m/s
+maxAngularVelocity     = 0.6081 rad/s
+
+maxLinearAcceleration  = 0.0496 m/s²
+maxAngularAcceleration = 0.3748 rad/s²
+
+ve dört limit kontrolümüz de geçti.
+
+Ayrıca:
+
+positionError    = 0
+orientationError = 0
+
+bulduk.
+
+Bu çok önemli.
+
+Çünkü retiming yaptıktan sonra:
+
+Robot yavaşladı ama hedef pose değişmedi.
+
+Yani sadece zaman parametrizasyonunu değiştirdik.
+
+# 27. Ama Burada Bir Problem Daha Vardı
+
+Tool'un Cartesian velocity'si güvenli olabilir:
+
+||v|| ≤ vMax
+
+ama robot joint velocity'si güvenli olmayabilir.
+
+Çünkü:
+
+xDot = J qDot
+
+ve ters ilişki:
+
+qDot = J# xDot
+
+Singularity yakınında J# çok büyüyebilir.
+
+Örneğin Tool sadece:
+
+0.1 m/s
+
+hareket ediyor olabilir.
+
+Ama bunu yapabilmek için J5:
+
+300 deg/s
+
+dönmek zorunda kalabilir.
+
+Bu yüzden yalnız Cartesian limit koymak yeterli değil.
+
+İşte bugün yaptığımız en önemli ikinci katman burada.
+
+# 28. cartesianJointLimitDuration.m
+
+Bu fonksiyon şunu yapıyor:
+
+Cartesian path
+      ↓
+Path'i örnekle
+      ↓
+Her noktada IK
+      ↓
+Her noktada Jacobian
+      ↓
+qDot ve qDDot hesapla
+      ↓
+Joint limitlerini kontrol et
+      ↓
+Gerekirse duration artır
+
+Bu bizim Cartesian trajectory'nin joint-level retiming planner'ı.
+
+# 29. Fonksiyon Çıkışları
+
+function [trajectoryDuration, maxJointVelocity, maxJointAcceleration, solutionAvailable] = ...
+
+Dört şey döndürüyor.
+
+trajectoryDuration:
+
+Gerçek güvenli trajectory süresi
+
+maxJointVelocity:
+
+Path boyunca tahmin edilen peak qDot
+
+maxJointAcceleration:
+
+Path boyunca tahmin edilen peak qDDot
+
+solutionAvailable:
+
+Path boyunca IK çözümü bulundu mu?
+
+# 30. İlk Hazırlık
+
+pStart = reshape(pStart, 3, 1);
+pTarget = reshape(pTarget, 3, 1);
+qStart = qStart(:);
+
+Input shape'leri garanti ediyoruz.
+
+Sonra:
+
+jointCount = robotKinematics.jointCount;
+
+Robot kaç joint ise ona göre output vector oluşturuyoruz.
+
+Bizde:
+
+jointCount = 6
+
+# 31. Peak Değerleri Başlangıçta Sıfırlıyoruz
+
+maxJointVelocity = zeros(jointCount, 1);
+maxJointAcceleration = zeros(jointCount, 1);
+solutionAvailable = true;
+
+Başlangıçta:
+
+peak velocity     = 0
+peak acceleration = 0
+IK path available = true
+
+varsayıyoruz.
+
+# 32. planningLimits.speedScale = 1 Neden Var?
+
+Bu önemli:
+
+planningLimits = motionLimits;
+planningLimits.speedScale = 1;
+
+Burada motionLimits'in kopyasını çıkarıyoruz.
+
+Sonra planner içinde:
+
+speedScale = 1
+
+yapıyoruz.
+
+Neden?
+
+Çünkü speedScale'i iki kere uygulamak istemiyoruz.
+
+İlk olarak:
+
+Fiziksel olarak minimum güvenli süreyi bul
+
+diyoruz.
+
+Sonra gerçek trajectory generator:
+
+speedScale
+
+uygulayabilir.
+
+Yani:
+
+Physical minimum duration
+          ↓
+speedScale
+          ↓
+Operator tarafından seçilen daha düşük hız
+
+Bu daha temiz mimari.
+
+# 33. İlk Cartesian Safe Duration
+
+trajectoryDuration = cartesianTrajectoryDuration(pStart, RStart, pTarget, RTarget, requestedDuration, planningLimits);
+
+Önce sadece:
+
+Linear velocity
+Linear acceleration
+Angular velocity
+Angular acceleration
+
+limitlerine göre başlangıç duration'ı buluyoruz.
+
+Daha joint hesaplamasına geçmedik.
+
+# 34. Sampling Parametreleri
+
+Bugün şunları ekledik:
+
+motionParameters.cartesianJointLimitSampleCount = 101;
+motionParameters.cartesianJointLimitMaxIterations = 3;
+motionParameters.cartesianJointLimitTolerance = 1e-6;
+motionParameters.cartesianJointLimitSafetyFactor = 1.02;
+
+sampleCount = 101:
+
+Path'i:
+
+0%
+1%
+2%
+...
+100%
+
+gibi yaklaşık 101 noktada kontrol ediyoruz.
+
+Neden her noktayı kontrol etmiyoruz?
+
+Çünkü continuous trajectory sonsuz sayıda noktadan oluşuyor.
+
+Bilgisayarda sonsuz nokta kontrol edemeyiz.
+
+Bu yüzden sampling kullanıyoruz.
+
+# 35. maxIterations
+
+motionParameters.cartesianJointLimitMaxIterations = 3;
+
+İlk duration'ın yeterli olmaması mümkün.
+
+O zaman:
+
+1. iteration → kontrol
+             → süreyi artır
+
+2. iteration → tekrar kontrol
+             → gerekiyorsa artır
+
+3. iteration → tekrar kontrol
+
+yapıyoruz.
+
+# 36. Safety Factor
+
+motionParameters.cartesianJointLimitSafetyFactor = 1.02;
+
+Bu:
+
+1.02 = %2
+
+ek süre bırakıyor.
+
+Çünkü 101 sample arasında tam peak noktayı kaçırabiliriz.
+
+Örneğin hesaplanan duration:
+
+4.0675 s
+
+ise:
+
+4.0675 × 1.02
+
+yaklaşık:
+
+4.15 s
+
+yapıyoruz.
+
+Bizim testte 4.1489 s çıkmasının nedenlerinden biri de bu safety margin.
+
+# 37. Outer Iteration
+
+for iteration = 1:maxIterations
+
+Burada trajectory'yi tekrar tekrar test ediyoruz.
+
+Her iteration başında:
+
+qCurrent = qStart;
+maxJointVelocity(:) = 0;
+maxJointAcceleration(:) = 0;
+
+resetliyoruz.
+
+# 38. qCurrent Neden Önemli?
+
+Analytical IK bir Cartesian pose için birden fazla solution üretebilir.
+
+Örneğin:
+
+elbow up
+elbow down
+wrist flip
+
+gibi.
+
+Biz IK'ye:
+
+qCurrent
+
+veriyoruz.
+
+IK mevcut configuration'a en yakın solution'ı seçiyor.
+
+Böylece path boyunca:
+
+branch 1
+branch 1
+branch 1
+branch 1
+
+devam etmeye çalışıyoruz.
+
+Aksi halde trajectory ortasında:
+
+branch 1
+↓
+branch 6
+
+şeklinde ani joint jump oluşabilir.
+
+# 39. Path Sampling
+
+for sampleIndex = 1:sampleCount
+
+Her sample için:
+
+normalizedTime = (sampleIndex - 1) / (sampleCount - 1);
+
+hesaplıyoruz.
+
+Bu bize:
+
+0 ≤ normalizedTime ≤ 1
+
+veriyor.
+
+Sonra:
+
+currentTime = normalizedTime * trajectoryDuration;
+
+ile gerçek trajectory zamanını buluyoruz.
+
+Örneğin duration:
+
+4 s
+
+ve normalizedTime:
+
+0.5
+
+ise:
+
+currentTime = 2 s
+
+# 40. Her Sample İçin Cartesian Trajectory
+
+[pDesired, RDesired, vDesired, omegaDesired, aDesired, alphaDesired] = ...
+    cartesianSpaceTrajectory(...);
+
+Buradan o andaki:
+
+pDesired
+RDesired
+vDesired
+omegaDesired
+aDesired
+alphaDesired
+
+değerlerini alıyoruz.
+
+Yani planner gerçekten çalıştıracağımız trajectory'nin küçük bir preview'sini yapıyor.
+
+# 41. Her Pose İçin IK
+
+[qDesired, ikAvailable] = analyticalInverseKinematics(pDesired, RDesired, qCurrent, robotKinematics);
+
+Her Cartesian pose'u:
+
+pDesired, RDesired
+
+joint configuration'a dönüştürüyoruz:
+
+qDesired
+
+Eğer:
+
+if ~ikAvailable
+
+olursa:
+
+solutionAvailable = false;
+return;
+
+yapıyoruz.
+
+Yani trajectory'nin ortasında unreachable pose varsa planner:
+
+Bu Cartesian path gerçekleştirilemiyor.
+
+diyor.
+
+# 42. Cartesian Derivative → Joint Derivative
+
+Sonra:
+
+[qDotDesired, qDDotDesired] = cartesianToJointDerivatives(...);
+
+Mevcut fonksiyonumuzu kullanıyoruz.
+
+Velocity için:
+
+qDotDesired = J# xDotDesired
+
+Burada:
+
+xDotDesired =
+[vDesired
+ omegaDesired]
+
+Acceleration:
+
+qDDotDesired = J# (xDDotDesired - JDot qDotDesired)
+
+Burada:
+
+xDDotDesired =
+[aDesired
+ alphaDesired]
+
+Yani gerçek robot joint'lerinin o Cartesian trajectory'yi takip etmek için ne kadar hızlı dönmesi gerektiğini hesaplıyoruz.
+
+# 43. Peak Joint Values
+
+Her sample'da:
+
+maxJointVelocity = max(maxJointVelocity, abs(qDotDesired));
+
+yapıyoruz.
+
+Örneğin önce J6 peak:
+
+0.20
+
+bulduk.
+
+Sonraki sample:
+
+0.31
+
+ise yeni peak:
+
+0.31
+
+oluyor.
+
+Sonraki:
+
+0.25
+
+ise peak yine:
+
+0.31
+
+kalıyor.
+
+Aynısı acceleration:
+
+maxJointAcceleration = max(maxJointAcceleration, abs(qDDotDesired));
+
+için yapılıyor.
+
+Trajectory'nin sonunda elimizde:
+
+Her joint'in path boyunca en yüksek qDot değeri
+Her joint'in path boyunca en yüksek qDDot değeri
+
+oluyor.
+
+# 44. IK Branch Continuity
+
+Her sample sonunda:
+
+qCurrent = qDesired;
+
+yapıyoruz.
+
+Bu nedenle bir sonraki IK çağrısı:
+
+Az önce bulunduğum joint configuration'a en yakın solution hangisi?
+
+diye seçim yapıyor.
+
+Bu branch continuity açısından önemli.
+
+# 45. Velocity Ratio
+
+Trajectory örneklemesi bittikten sonra:
+
+velocityRatio = max(maxJointVelocity ./ motionLimits.jointVelocityMax(:));
+
+hesaplıyoruz.
+
+Örneğin:
+
+Measured peak J6 velocity = 0.70 rad/s
+J6 limit                 = 0.35 rad/s
+
+ise:
+
+velocityRatio = 0.70 / 0.35 = 2
+
+Yani trajectory velocity açısından:
+
+2 kat fazla hızlı
+
+# 46. Acceleration Ratio
+
+accelerationRatio = max(maxJointAcceleration ./ motionLimits.jointAccelerationMax(:));
+
+Örneğin:
+
+qDDotPeak / qDDotMax = 4
+
+ise acceleration dört kat fazla.
+
+Ama acceleration:
+
+qDDot ∝ 1/T^2
+
+olduğu için duration'ı dört kat artırmamız gerekmiyor.
+
+sqrt(4) = 2
+
+kat artırmak yeterli.
+
+# 47. En Önemli Satırlardan Biri
+
+durationScale = max([1, velocityRatio, sqrt(accelerationRatio)]);
+
+Bugünkü Cartesian joint retiming'in ana matematiği bu.
+
+Velocity:
+
+qDot ∝ 1/T
+
+olduğu için:
+
+Tnew = velocityRatio * T
+
+Acceleration:
+
+qDDot ∝ 1/T^2
+
+olduğu için:
+
+Tnew = sqrt(accelerationRatio) * T
+
+İkisinden hangisi daha kısıtlayıcıysa onu seçiyoruz.
+
+Ve:
+
+1
+
+de koyuyoruz ki duration hiçbir zaman küçülmesin.
+
+# 48. Zaten Güvenliyse
+
+if durationScale <= 1 + tolerance
+    return;
+end
+
+Örneğin:
+
+durationScale = 1.0000001
+
+gibi numerical küçük farklar varsa tekrar iteration yapmanın anlamı yok.
+
+Bu yüzden:
+
+tolerance = 1e-6;
+
+kullanıyoruz.
+
+# 49. Güvenli Değilse Duration Artıyor
+
+trajectoryDuration = trajectoryDuration * durationScale * safetyFactor;
+
+Örneğin:
+
+Current duration = 2 s
+velocityRatio    = 1.8
+safetyFactor     = 1.02
+
+ise:
+
+Tnew = 2 × 1.8 × 1.02
+
+Tnew ≈ 3.672 s
+
+Sonra ikinci iteration başlıyor.
+
+Yeni duration ile:
+
+Cartesian trajectory yeniden hesaplanıyor
+IK yeniden hesaplanıyor
+Jacobian yeniden hesaplanıyor
+qDot/qDDot yeniden hesaplanıyor
+
+ve tekrar kontrol ediliyor.
+
+# 50. robotParameters.m İçinde Planner'ı Nasıl Bağladık?
+
+Önce Cartesian trajectory için:
+
+cartesianTrajectoryStartTime = 0;
+cartesianTrajectoryRequestedEndTime = 0.5;
+
+dedik.
+
+Önemli olarak artık:
+
+Requested End Time
+
+ve:
+
+Actual/Safe End Time
+
+ayrımı var.
+
+# 51. Reachable Test Pose Üretiyoruz
+
+cartesianQStart = deg2rad([0 -20 60 0 -30 0]).';
+cartesianQTarget = deg2rad([30 5 80 20 -40 35]).';
+
+Sonra:
+
+[pStart, RStart, ~] = forwardKinematics(cartesianQStart, robotKinematics);
+[pTarget, RTarget, ~] = forwardKinematics(cartesianQTarget, robotKinematics);
+
+kullanıyoruz.
+
+Neden?
+
+Çünkü test için rastgele bir:
+
+x y z R
+
+seçersek pose unreachable olabilir.
+
+Biz bilinen joint configuration'lardan FK ile pose üreterek:
+
+Başlangıç ve hedefin robot tarafından ulaşılabilir olduğunu garanti ediyoruz.
+
+# 52. Requested Duration
+
+cartesianRequestedDuration = cartesianTrajectoryRequestedEndTime - cartesianTrajectoryStartTime;
+
+Bizim testte:
+
+0.5 - 0 = 0.5 s
+
+# 53. Joint-Safe Duration Planner
+
+Sonra:
+
+[cartesianJointSafeDuration, cartesianPlannedMaxJointVelocity, cartesianPlannedMaxJointAcceleration, cartesianJointPathAvailable] = ...
+    cartesianJointLimitDuration(...);
+
+Bu satırdan dört önemli sonuç geliyor.
+
+Bizim testte:
+
+cartesianJointSafeDuration = 4.1489 s
+
+çıktı.
+
+Halbuki istemiştik:
+
+0.5 s
+
+Yani planner:
+
+0.5 saniye bu robot için joint velocity/acceleration limitleri açısından uygun değil.
+
+dedi.
+
+Ve:
+
+4.1489 s
+
+yaptı.
+
+# 54. Yeni End Time
+
+Son olarak:
+
+cartesianTrajectoryEndTime = cartesianTrajectoryStartTime + cartesianJointSafeDuration;
+
+Dolayısıyla:
+
+start = 0
+safe duration = 4.1489
+
+ise:
+
+cartesianTrajectoryEndTime = 4.1489
+
+oluyor.
+
+Bu değer artık Simulink Cartesian trajectory block'una gidiyor.
+
+# 55. Planner'ın Tahmini Neydi?
+
+Planner şu peak velocity'leri buldu:
+
+0.2538
+0.2164
+0.2183
+0.1747
+0.1427
+0.3422 rad/s
+
+Limitimiz:
+
+0.3491 rad/s
+
+idi.
+
+Özellikle J6:
+
+0.3422 < 0.3491
+
+ama oldukça yakın.
+
+Bu da planner'ın trajectory'yi gereğinden aşırı yavaşlatmadığını gösteriyor.
+
+# 56. Planner'a Güvenmekle Yetinmedik
+
+Bu önemli.
+
+Planner:
+
+“Güvenli”
+
+dedi diye doğrudan kabul etmedik.
+
+Simulink'te gerçek çalıştırılan:
+
+qDotDesired
+qDDotDesired
+
+sinyallerini logladık:
+
+qDotDesiredLog
+qDDotDesiredLog
+
+Sonra:
+
+qDotData = squeeze(out.qDotDesiredLog.Data);
+qDDotData = squeeze(out.qDDotDesiredLog.Data);
+
+ile verileri:
+
+6 × N
+
+hale getirdik.
+
+Burada:
+
+6 = joint sayısı
+N = simulation sample sayısı
+
+# 57. Gerçek Peak Değerleri
+
+maxJointVelocity = max(abs(qDotData), [], 2);
+
+Her row bir joint olduğu için dimension 2 boyunca maximum arıyoruz.
+
+Yani:
+
+J1'in bütün zaman örnekleri → max
+J2'nin bütün zaman örnekleri → max
+...
+J6'nın bütün zaman örnekleri → max
+
+Aynısı:
+
+maxJointAcceleration = max(abs(qDDotData), [], 2);
+
+için yapıldı.
+
+Ve:
+
+jointVelocitySafe =
+1
+1
+1
+1
+1
+1
+
+jointAccelerationSafe =
+1
+1
+1
+1
+1
+1
+
+çıktı.
+
+Dolayısıyla:
+
+Planner prediction ✓
+Gerçek Simulink execution ✓
+
+ikisi de geçti.
+
+# 58. Şu An Sistem Tam Olarak Ne Yapabiliyor?
+
+Joint Space komutu geldiğinde:
+
+qStart
+qTarget
+Requested Duration
+        ↓
+Joint velocity / acceleration limit hesabı
+        ↓
+Safe Duration
+        ↓
+Quintic trajectory
+        ↓
+qDesired
+qDotDesired
+qDDotDesired
+
+Cartesian komutu geldiğinde ise daha gelişmiş:
+
+pStart / RStart
+pTarget / RTarget
+Requested Duration
+          ↓
+Cartesian v/a/omega/alpha limit hesabı
+          ↓
+İlk Safe Duration
+          ↓
+Path Sampling
+          ↓
+Analytical IK
+          ↓
+qDesired
+          ↓
+Jacobian
+          ↓
+qDotDesired / qDDotDesired
+          ↓
+Joint velocity / acceleration limit kontrolü
+          ↓
+Gerekirse duration büyüt
+          ↓
+Tekrar kontrol
+          ↓
+Safe Duration
+          ↓
+Simulink execution
+
+Bu yüzden bugün yaptığımız sistem yalnızca “hızı sınırla” değil.
+
+Daha doğru tanım:
+
+Robot-independent trajectory time scaling / retiming infrastructure with Cartesian and joint-space velocity/acceleration constraints.
+
+# 59. Bu Gerçek Speed Control Değil
+
+Bunu da ayırmıştık.
+
+Şu anda yaptığımız:
+
+qDesired(t), qDotDesired(t), qDDotDesired(t)
+
+referanslarını güvenli üretmek.
+
+Henüz robotun gerçek hareketini ölçüp:
+
+qDesired - q
+
+ve:
+
+qDotDesired - qDot
+
+error'larına göre motor torque üretmiyoruz.
+
+Gerçek Servo Control aşamasında:
+
+eq = qDesired - q
+
+eqDot = qDotDesired - qDot
+
+ve örneğin:
+
+tau = Kp eq + Kd eqDot
+
+yapacağız.
+
+Bugünkü katman:
+
+“Robot ne yapmalı?”
+
+sorusunu cevaplıyor.
+
+Servo Control:
+
+“Motorları nasıl sürmeliyim ki robot gerçekten bunu yapsın?”
+
+sorusunu cevaplayacak.
+
+# 60. İki Teknik Not
+
+Şu anda motionLimits.jointVelocityMax = 20 deg/s ve jointAccelerationMax = 40 deg/s² değerleri retiming'i zorlamak için kullandığımız test değerleri. Gerçek robot için motor + reducer + mekanik tasarımdan gelecek limitlerle değiştirilecek.
+
+Ayrıca cartesianJointLimitDuration continuous path'in sonsuz noktasını kontrol etmiyor; 101 sample kontrol ediyor. 1.02 safety factor bunun için koyuldu. Final robot aşamasında gerekirse sample sayısını yükseltmek veya adaptive sampling yapmak mümkün.
+
+Özetle bugün eklenen üç ana dosya:
+
+jointTrajectoryDuration.m
+cartesianTrajectoryDuration.m
+cartesianJointLimitDuration.m
+
+ve bunların birlikte yaptığı iş:
+
+İstenen hareket
+→ Fiziksel limit kontrolü
+→ Safe duration
+→ Tutarlı trajectory
+
+Bu katman artık hem Joint Space, hem Cartesian Space, hem de Cartesian → Joint mapping seviyesinde çalışıyor.
