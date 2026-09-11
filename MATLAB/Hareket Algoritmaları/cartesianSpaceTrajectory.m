@@ -18,7 +18,7 @@
 % quaternionMultiply          -> iki quaternion rotation'ını birleştirir
 
 function [pDesired, RDesired, vDesired, omegaDesired, aDesired, alphaDesired] = ...
-    cartesianSpaceTrajectory(pStart, RStart, pTarget, RTarget, startTime, endTime, currentTime)
+    cartesianSpaceTrajectory(pStart, RStart, pTarget, RTarget, startTime, endTime, currentTime, motionLimits)
 
 pStart = reshape(pStart, 3, 1);
 pTarget = reshape(pTarget, 3, 1);
@@ -32,7 +32,18 @@ omegaDesired = zeros(3, 1);
 aDesired = zeros(3, 1);
 alphaDesired = zeros(3, 1);
 
-duration = endTime - startTime;
+requestedDuration = endTime - startTime;
+
+if requestedDuration <= 0
+    pDesired = pTarget;
+    RDesired = RTarget;
+    return;
+end
+
+% Cartesian linear/angular velocity ve acceleration limitlerine göre
+% trajectory süresini gerekirse otomatik olarak uzatır.
+duration = cartesianTrajectoryDuration(pStart, RStart, pTarget, RTarget, requestedDuration, motionLimits);
+effectiveEndTime = startTime + duration;
 
 if duration <= 0
     pDesired = pTarget;
@@ -44,7 +55,7 @@ if currentTime <= startTime
     return;
 end
 
-if currentTime >= endTime
+if currentTime >= effectiveEndTime
     pDesired = pTarget;
     RDesired = RTarget;
     return;

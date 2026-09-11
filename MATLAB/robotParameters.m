@@ -1,12 +1,33 @@
 clc, clear;
-addpath(fullfile(fileparts(mfilename("fullpath")), "Robot Dinamikleri"));
-addpath(fullfile(fileparts(mfilename("fullpath")), "Hareket Algoritmaları"));
+
+%% Proje Yolları
+
+projectRoot = fileparts(mfilename("fullpath"));
+
+robotKinematicsFolder = fullfile(projectRoot, "Robot Kinematiği");
+motionAlgorithmsFolder = fullfile(projectRoot, "Hareket Algoritmaları");
+controlFolder = fullfile(projectRoot, "Kontrol");
+safetyFolder = fullfile(projectRoot, "Güvenlik");
+testsFolder = fullfile(projectRoot, "Testler");
+robotModelFolder = fullfile(projectRoot, "Robot Modeli");
+
+projectFolders = {robotKinematicsFolder, motionAlgorithmsFolder, controlFolder, safetyFolder, testsFolder, robotModelFolder};
+
+for folderIndex = 1:numel(projectFolders)
+    if isfolder(projectFolders{folderIndex})
+        addpath(projectFolders{folderIndex});
+    end
+end
+
+%% Simülasyon Parametreleri
 
 % Birimler: m, rad, rad/s, rad/s^2
 
-simTime = 10.0;
+simTime = 3.2224;
 
-%% Robot Geometrisi
+%% Robot Modeli
+
+% Robot Geometrisi
 
 link1Length = 0.35;
 link1Width = 0.10;
@@ -74,7 +95,17 @@ toolPlateThickness = 0.04;
 
 toolFrameOffset = j6ToolOffset + [0 0 toolAdapterLength + toolPlateThickness];
 
-%% Kinematik Parametreler
+% Compatibility
+
+armWidth = 0.08;
+armDepth = 0.08;
+
+wristWidth = 0.06;
+wristDepth = 0.06;
+
+%% Robot Kinematiği
+
+% Kinematik Parametreler
 
 jointCount = 6;
 
@@ -117,12 +148,8 @@ robotKinematics.toolFixedRotationAngle = 0;
 % Wrist Parametreleri
 
 robotKinematics.j4ToWristCenter = [0 0 link4Length];
-
-robotKinematics.wristCenterToTool = ...
-    [0 0 link5Length + toolFrameOffset(3)];
-
-robotKinematics.shoulderLateralOffset = ...
-    j23Offset(3) + j34Offset(3) + link4Length;
+robotKinematics.wristCenterToTool = [0 0 link5Length + toolFrameOffset(3)];
+robotKinematics.shoulderLateralOffset = j23Offset(3) + j34Offset(3) + link4Length;
 
 % Joint Limitleri
 
@@ -135,18 +162,16 @@ robotKinematics.jointLimits = deg2rad([
     -360 360
 ]);
 
-%% Inverse Kinematics Parametreleri
+% Inverse Kinematics Parametreleri
 
 robotKinematics.ik.geometryTolerance = 1e-9;
 robotKinematics.ik.positionTolerance = 1e-6;
 robotKinematics.ik.orientationTolerance = 1e-6;
 robotKinematics.ik.wristSingularityTolerance = 1e-9;
 
-%% Singularity Parametreleri
+% Singularity Parametreleri
 
-singularityParameters.characteristicLength = ...
-    link2Length + link3Length + link4Length + link5Length + norm(toolFrameOffset);
-
+singularityParameters.characteristicLength = link2Length + link3Length + link4Length + link5Length + norm(toolFrameOffset);
 singularityParameters.sigmaThreshold = 0.05;
 
 % Workspace Mapping Parametreleri
@@ -154,67 +179,81 @@ singularityParameters.sigmaThreshold = 0.05;
 mappingParameters.sampleCount = 20000;
 mappingParameters.randomSeed = 1;
 
-%% Joint Test Hareketi
+%% Robot Konfigürasyonları
 
-jointAmplitude = deg2rad([0 0 0 0 0 0]);
-jointFrequency = [0.8 1.1 0.7 1.3 0.9 1.2];
-jointPhase = [0 pi/6 pi/4 0 pi/3 pi/8];
-
-qTest = deg2rad([10 -20 60 15 -30 25]);
-jointBias = qTest;
-
-qAmplitude = jointAmplitude;
-qFrequency = jointFrequency;
-qPhase = jointPhase;
-qBias = jointBias;
-
-qDotAmplitude = jointAmplitude .* jointFrequency;
-qDotFrequency = jointFrequency;
-qDotPhase = jointPhase + pi/2;
-qDotBias = zeros(1, jointCount);
-
-qDDotAmplitude = jointAmplitude .* jointFrequency.^2;
-qDDotFrequency = jointFrequency;
-qDDotPhase = jointPhase + pi;
-qDDotBias = zeros(1, jointCount);
-
-%% Home Konfigürasyonu
+% Home Konfigürasyonu
 
 homeConfiguration = deg2rad([0 -25 80 0 -35 0]);
 
-%% Compatibility
+%% Motion Parametreleri
 
-armWidth = 0.08;
-armDepth = 0.08;
+% Motion Limit Parametreleri
 
-wristWidth = 0.06;
-wristDepth = 0.06;
+motionLimits.speedScale = 1.0; % 1.0 -> 100%
+
+motionLimits.jointVelocityMax = deg2rad([120 100 120 180 180 250]).';
+motionLimits.jointAccelerationMax = deg2rad([200 180 200 300 300 400]).';
+
+motionLimits.cartesianLinearVelocityMax = 0.5;
+motionLimits.cartesianLinearAccelerationMax = 1.0;
+
+motionLimits.cartesianAngularVelocityMax = deg2rad(90);
+motionLimits.cartesianAngularAccelerationMax = deg2rad(180);
+
+% Cartesian Joint Limit Parametreleri
+
+motionParameters.cartesianJointLimitSampleCount = 101;
+motionParameters.cartesianJointLimitMaxIterations = 3;
+motionParameters.cartesianJointLimitTolerance = 1e-6;
+motionParameters.cartesianJointLimitSafetyFactor = 1.02;
+
+% Cartesian To Joint Derivative Parametreleri
+
+motionParameters.damping = 1e-6;
+motionParameters.jacobianDerivativeStep = 1e-6;
+
+%% Güvenlik Parametreleri
+
+% Joint Position Limit Parametreleri
+
+safetyParameters.jointSoftLimitMargin = deg2rad([5 5 5 5 5 5]).';
+safetyParameters.jointLimitTolerance = 1e-9;
 
 %% Trajectory
+
+% Başlangıç ve Hedef Açıları
+
+qStart = deg2rad([0 -20 60 0 -30 0]).';
+qTarget = deg2rad([30 5 80 20 -40 35]).';
+
+% 0: Cartesian, 1: Joint
+
+chosenTrajectory = 1;
 
 % Joint Trajectory
 
 jointTrajectoryStartTime = 0;
-jointTrajectoryEndTime = 5;
+jointTrajectoryEndTime = 0.5;
 
-qStart = deg2rad([0 -20 60 0 -30 0]).';
-qTarget = deg2rad([40 10 90 -30 20 45]).';
+[jointTrajectorySafe, jointTrajectoryHardLimitSafe, jointTrajectorySoftLimitSafe] = ...
+    validateJointTrajectory(qStart, qTarget, robotKinematics, safetyParameters);
 
 % Cartesian Trajectory
 
 cartesianTrajectoryStartTime = 0;
-cartesianTrajectoryEndTime = 5;
+cartesianTrajectoryRequestedEndTime = 0.5;
 
-cartesianQStart = deg2rad([0 -20 60 0 -30 0]).';
-cartesianQTarget = deg2rad([30 5 80 20 -40 35]).';
+[pStart, RStart, ~] = forwardKinematics(qStart, robotKinematics);
+[pTarget, RTarget, ~] = forwardKinematics(qTarget, robotKinematics);
 
-[pStart, RStart, ~] = ...
-    forwardKinematics(cartesianQStart, robotKinematics);
+cartesianRequestedDuration = cartesianTrajectoryRequestedEndTime - cartesianTrajectoryStartTime;
 
-[pTarget, RTarget, ~] = ...
-    forwardKinematics(cartesianQTarget, robotKinematics);
+[cartesianJointSafeDuration, cartesianPlannedMaxJointVelocity, cartesianPlannedMaxJointAcceleration, ...
+    cartesianJointPathAvailable, cartesianJointHardLimitSafe, cartesianJointSoftLimitSafe] = ...
+    cartesianJointLimitDuration(pStart, RStart, pTarget, RTarget, qStart, cartesianRequestedDuration, ...
+    robotKinematics, motionLimits, motionParameters, safetyParameters);
 
-% Motion Parametreleri
+cartesianTrajectoryEndTime = cartesianTrajectoryStartTime + cartesianJointSafeDuration;
 
-motionParameters.damping = 1e-6;
-motionParameters.jacobianDerivativeStep = 1e-6;
+cartesianTrajectorySafe = ...
+    cartesianJointPathAvailable && cartesianJointHardLimitSafe && cartesianJointSoftLimitSafe;
