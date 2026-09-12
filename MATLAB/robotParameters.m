@@ -1,6 +1,6 @@
 clc, clear;
 
-%% Proje Yolları
+%% Path
 
 projectRoot = fileparts(mfilename("fullpath"));
 
@@ -219,16 +219,73 @@ motionParameters.jacobianDerivativeStep = 1e-6;
 safetyParameters.jointSoftLimitMargin = deg2rad([5 5 5 5 5 5]).';
 safetyParameters.jointLimitTolerance = 1e-9;
 
+% Collision Parametreleri
+
+collisionParameters.trajectorySampleCount = 101;
+
+collisionParameters.linkRadius = [
+max(link1Width, link1Depth) / 2
+max(link2Width, link2Depth) / 2
+max(link3Width, link3Depth) / 2
+link4Radius
+link5Radius
+max(toolWidth, toolHeight) / 2
+];
+
+collisionParameters.selfCollisionPairs = [
+1 3
+1 4
+1 5
+1 6
+2 4
+2 5
+2 6
+3 5
+3 6
+4 6
+];
+
+collisionParameters.selfCollisionClearance = [
+0.020
+0.020
+0.020
+0.020
+0.020
+0.020
+0.020
+0.020
+0.020
+0.002
+];
+
+collisionParameters.groundHeight = 0;
+collisionParameters.groundClearance = 0.02;
+collisionParameters.environmentCheckLinks = [2 3 4 5 6];
+
+collisionParameters.environmentBoxCenter = [
+    2.00 0 0.50
+];
+
+collisionParameters.environmentBoxSize = [
+    0.30 0.30 1.00
+];
+
+collisionParameters.environmentBoxClearance = [
+    0.020
+    0.020
+    0.020
+];
+
 %% Trajectory
 
 % Başlangıç ve Hedef Açıları
 
 qStart = deg2rad([0 -20 60 0 -30 0]).';
-qTarget = deg2rad([30 5 80 20 -40 35]).';
+qTarget = deg2rad([-127.3010 -70.2617 -125.5892 -21.3085 -112.8297 -31.0801]).';
 
 % 0: Cartesian, 1: Joint
 
-chosenTrajectory = 1;
+chosenTrajectory = 0;
 
 % Joint Trajectory
 
@@ -255,39 +312,21 @@ cartesianRequestedDuration = cartesianTrajectoryRequestedEndTime - cartesianTraj
 
 cartesianTrajectoryEndTime = cartesianTrajectoryStartTime + cartesianJointSafeDuration;
 
-<<<<<<< Updated upstream
-cartesianTrajectorySafe = ...
-    cartesianJointPathAvailable && cartesianJointHardLimitSafe && cartesianJointSoftLimitSafe;
-=======
-motionParameters.damping = 1e-6;
-motionParameters.jacobianDerivativeStep = 1e-6;
-
 cartesianTrajectorySafe = ...
     cartesianJointPathAvailable && cartesianJointHardLimitSafe && cartesianJointSoftLimitSafe;
 
-% Collision Parametreleri
+% Collision Trajectory Validation
 
-collisionParameters.minimumDistance = 0.02; % 20 mm
+[jointTrajectoryCollisionSafe, jointSelfCollisionSafe, jointEnvironmentCollisionSafe, ...
+    jointCollisionPathAvailable, jointMinimumSelfDistance, jointMinimumEnvironmentDistance, jointFirstUnsafeSample] = ...
+    validateCollisionTrajectory(qStart, qTarget, pStart, RStart, pTarget, RTarget, 1, ...
+    robotKinematics, collisionParameters);
 
-collisionParameters.linkRadius = [
-    max(link1Width, link1Depth) / 2
-    max(link2Width, link2Depth) / 2
-    max(link3Width, link3Depth) / 2
-    link4Radius
-    link5Radius
-    max(toolWidth, toolHeight) / 2
-    ];
+[cartesianTrajectoryCollisionSafe, cartesianSelfCollisionSafe, cartesianEnvironmentCollisionSafe, ...
+    cartesianCollisionPathAvailable, cartesianMinimumSelfDistance, cartesianMinimumEnvironmentDistance, cartesianFirstUnsafeSample] = ...
+    validateCollisionTrajectory(qStart, qTarget, pStart, RStart, pTarget, RTarget, 0, ...
+    robotKinematics, collisionParameters);
 
-collisionParameters.selfCollisionPairs = [
-    1 3
-    1 4
-    1 5
-    1 6
-    2 4
-    2 5
-    2 6
-    3 5
-    3 6
-    4 6
-    ];
->>>>>>> Stashed changes
+jointPlanningSafe = jointTrajectorySafe && jointTrajectoryCollisionSafe;
+
+cartesianPlanningSafe = cartesianTrajectorySafe && cartesianTrajectoryCollisionSafe;7

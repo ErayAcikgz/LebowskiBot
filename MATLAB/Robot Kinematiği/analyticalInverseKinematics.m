@@ -24,15 +24,12 @@ wristTolerance = ...
 
 % Wrist Center
 
-pWrist = ...
-    pDesired - ...
-    RDesired * robotKinematics.wristCenterToTool.';
+pWrist = pDesired - RDesired * robotKinematics.wristCenterToTool.';
 
 xWrist = pWrist(1);
 yWrist = pWrist(2);
 
-lateralOffset = ...
-    robotKinematics.shoulderLateralOffset;
+lateralOffset = robotKinematics.shoulderLateralOffset;
 
 rho = hypot(xWrist, yWrist);
 
@@ -40,8 +37,7 @@ if rho < abs(lateralOffset) - geometryTolerance
     return;
 end
 
-radialSquared = ...
-    rho^2 - lateralOffset^2;
+radialSquared = rho^2 - lateralOffset^2;
 
 radialSquared = max(radialSquared, 0);
 
@@ -56,27 +52,21 @@ radialBranches = [
 
 % Planar Arm Geometry
 
-shoulderTranslation = ...
-    robotKinematics.jointFixedTranslation(2, :);
+shoulderTranslation = robotKinematics.jointFixedTranslation(2, :);
 
-link2Vector = ...
-    robotKinematics.jointFixedTranslation(3, 1:2);
+link2Vector = robotKinematics.jointFixedTranslation(3, 1:2);
 
-joint3ToWrist = ...
-    robotKinematics.jointFixedTranslation(4, :) + ...
+joint3ToWrist = robotKinematics.jointFixedTranslation(4, :) + ...
     robotKinematics.j4ToWristCenter;
 
-link3Vector = ...
-    joint3ToWrist(1:2);
+link3Vector = joint3ToWrist(1:2);
 
 link2Magnitude = norm(link2Vector);
 link3Magnitude = norm(link3Vector);
 
-link2Angle = ...
-    atan2(link2Vector(2), link2Vector(1));
+link2Angle = atan2(link2Vector(2), link2Vector(1));
 
-link3Angle = ...
-    atan2(link3Vector(2), link3Vector(1));
+link3Angle = atan2(link3Vector(2), link3Vector(1));
 
 joint2FixedRotation = axisRotation( ...
     robotKinematics.jointFixedRotationAxis(2, :), ...
@@ -86,28 +76,22 @@ toolFixedRotation = axisRotation( ...
     robotKinematics.toolFixedRotationAxis, ...
     robotKinematics.toolFixedRotationAngle);
 
-RDesiredJ6 = ...
-    RDesired * toolFixedRotation.';
+RDesiredJ6 = RDesired * toolFixedRotation.';
 
 % Shoulder Branches
 
 for shoulderBranch = 1:2
-    radialCurrent = ...
-        radialBranches(shoulderBranch);
+    radialCurrent = radialBranches(shoulderBranch);
 
-    q1 = ...
-        phi - atan2(lateralOffset, radialCurrent);
+    q1 = phi - atan2(lateralOffset, radialCurrent);
 
     q1 = wrapAngle(q1);
 
-    wristAfterJ1 = ...
-        rotationZ(-q1) * pWrist;
+    wristAfterJ1 = rotationZ(-q1) * pWrist;
 
-    wristRelativeShoulder = ...
-        wristAfterJ1 - shoulderTranslation.';
+    wristRelativeShoulder = wristAfterJ1 - shoulderTranslation.';
 
-    wristJoint2Frame = ...
-        joint2FixedRotation.' * wristRelativeShoulder;
+    wristJoint2Frame = joint2FixedRotation.' * wristRelativeShoulder;
 
     xPlanar = wristJoint2Frame(1);
     yPlanar = wristJoint2Frame(2);
@@ -322,16 +306,12 @@ for i = 1:8
         continue;
     end
 
-    qCandidate = ...
-        qSolutions(:, i);
+    qCandidate = qSolutions(:, i);
 
     jointDifference = ...
-        atan2( ...
-            sin(qCandidate - qCurrent), ...
-            cos(qCandidate - qCurrent));
+        atan2(sin(qCandidate - qCurrent), cos(qCandidate - qCurrent));
 
-    configurationDistance = ...
-        norm(jointDifference);
+    configurationDistance = norm(jointDifference);                         
 
     if configurationDistance < minimumDistance
         minimumDistance = configurationDistance;

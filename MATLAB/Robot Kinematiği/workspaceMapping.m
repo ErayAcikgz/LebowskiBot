@@ -33,8 +33,7 @@ for sample = 1:sampleCount
         qMin = jointLimits(joint, 1);
         qMax = jointLimits(joint, 2);
 
-        q(joint) = qMin + ...
-            unitSamples(sample, joint) * (qMax - qMin);
+        q(joint) = qMin + unitSamples(sample, joint) * (qMax - qMin);
     end
 
     [p, ~, ~] = forwardKinematics(q, robotKinematics);
