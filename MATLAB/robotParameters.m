@@ -255,5 +255,39 @@ cartesianRequestedDuration = cartesianTrajectoryRequestedEndTime - cartesianTraj
 
 cartesianTrajectoryEndTime = cartesianTrajectoryStartTime + cartesianJointSafeDuration;
 
+<<<<<<< Updated upstream
 cartesianTrajectorySafe = ...
     cartesianJointPathAvailable && cartesianJointHardLimitSafe && cartesianJointSoftLimitSafe;
+=======
+motionParameters.damping = 1e-6;
+motionParameters.jacobianDerivativeStep = 1e-6;
+
+cartesianTrajectorySafe = ...
+    cartesianJointPathAvailable && cartesianJointHardLimitSafe && cartesianJointSoftLimitSafe;
+
+% Collision Parametreleri
+
+collisionParameters.minimumDistance = 0.02; % 20 mm
+
+collisionParameters.linkRadius = [
+    max(link1Width, link1Depth) / 2
+    max(link2Width, link2Depth) / 2
+    max(link3Width, link3Depth) / 2
+    link4Radius
+    link5Radius
+    max(toolWidth, toolHeight) / 2
+    ];
+
+collisionParameters.selfCollisionPairs = [
+    1 3
+    1 4
+    1 5
+    1 6
+    2 4
+    2 5
+    2 6
+    3 5
+    3 6
+    4 6
+    ];
+>>>>>>> Stashed changes
