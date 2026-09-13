@@ -329,4 +329,11 @@ cartesianTrajectorySafe = ...
 
 jointPlanningSafe = jointTrajectorySafe && jointTrajectoryCollisionSafe;
 
-cartesianPlanningSafe = cartesianTrajectorySafe && cartesianTrajectoryCollisionSafe;7
+cartesianPlanningSafe = cartesianTrajectorySafe && cartesianTrajectoryCollisionSafe;
+
+%% Kontrol
+
+servoParameters.Kp = ones(6,1);
+servoParameters.Kd = 0.1*ones(6,1);
+
+load("Kontrol/servoControlState.mat")
