@@ -30,6 +30,12 @@ add_executable(Lebowski
     src/ui/widgets/ValueRow.h
     src/ui/widgets/JointStatusWidget.cpp
     src/ui/widgets/JointStatusWidget.h
+    src/ui/widgets/JointControlWidget.cpp
+    src/ui/widgets/JointControlWidget.h
+    src/ui/widgets/InstructionEditorWidget.cpp
+    src/ui/widgets/InstructionEditorWidget.h
+    src/ui/widgets/RobotViewWidget.cpp
+    src/ui/widgets/RobotViewWidget.h
     src/pages/OverviewPage.cpp
     src/pages/OverviewPage.h
     src/pages/PlaceholderPage.cpp

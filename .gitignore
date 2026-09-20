@@ -59,6 +59,10 @@
 **/*.slxc
 **/*~
 **/*.slx.original
+**/*.slx.autosave
+**/codegen/
+**/*_ert_rtw/
+**/*_grt_rtw/
 
 # furkan çaldım knk
 KiCad/.history/

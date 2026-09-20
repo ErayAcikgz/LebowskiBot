@@ -162,6 +162,291 @@ QWidget {
     font-weight: 600;
 }
 
+#controlSlider {
+    min-height: 20px;
+}
+
+#controlSlider::groove:horizontal {
+    height: 4px;
+    background-color: #514d47;
+}
+
+#controlSlider::handle:horizontal {
+    width: 12px;
+    margin: -5px 0;
+    background-color: #DFD0B8;
+    border: 1px solid #948979;
+    border-radius: 6px;
+}
+
+#controlSlider::sub-page:horizontal {
+    background-color: #948979;
+}
+
+#controlValue {
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+#jointInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 600;
+    padding: 3px 6px;
+}
+
+#jointInput:focus {
+    border-color: #DFD0B8;
+}
+
+#stepSelector {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 8px;
+}
+
+#stepSelector::drop-down {
+    border: none;
+    width: 20px;
+}
+
+#stepSelector QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#settingsCombo,
+#settingsInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 8px;
+}
+
+#settingsCombo:focus,
+#settingsInput:focus {
+    border-color: #DFD0B8;
+}
+
+#settingsCombo QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#settingsCheckBox {
+    color: #DFD0B8;
+}
+
+#settingsCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 2px;
+}
+
+#settingsCheckBox::indicator:checked {
+    background-color: #948979;
+    border-color: #DFD0B8;
+}
+
+#settingsInformation {
+    color: #948979;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 2px 2px;
+}
+
+#jogButton {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0;
+}
+
+#jogButton:hover {
+    background-color: #514d47;
+}
+
+#jogButton:pressed {
+    background-color: #393E46;
+}
+
+#secondaryButton,
+#stopButton {
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    font-weight: 700;
+    padding: 0 16px;
+}
+
+#secondaryButton {
+    background-color: #222831;
+}
+
+#secondaryButton:hover {
+    background-color: #514d47;
+}
+
+#programList,
+#instructionList,
+#waypointList {
+    background-color: #222831;
+    border: 1px solid #514d47;
+    border-radius: 3px;
+    color: #DFD0B8;
+    outline: none;
+}
+
+#programList::item,
+#instructionList::item,
+#waypointList::item {
+    border-bottom: 1px solid #393E46;
+    padding: 7px 8px;
+}
+
+#programList::item:hover,
+#instructionList::item:hover,
+#waypointList::item:hover {
+    background-color: #393E46;
+}
+
+#programList::item:selected,
+#instructionList::item:selected,
+#waypointList::item:selected {
+    background-color: #514d47;
+    color: #DFD0B8;
+}
+
+#eventsList {
+    background-color: #222831;
+    border: 1px solid #514d47;
+    border-radius: 3px;
+    color: #948979;
+    outline: none;
+    padding: 4px;
+}
+
+#eventsList::item {
+    padding: 7px 8px;
+}
+
+#waypointNameInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 4px 6px;
+}
+
+#waypointNameInput:focus {
+    border-color: #DFD0B8;
+}
+
+#poseContext {
+    color: #948979;
+    font-size: 11px;
+}
+
+#programName {
+    color: #DFD0B8;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#instructionHeading {
+    color: #DFD0B8;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+#instructionSection {
+    color: #948979;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#instructionSpin,
+#instructionSelector {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 3px 6px;
+}
+
+#instructionSpin:focus,
+#instructionSelector:focus {
+    border-color: #DFD0B8;
+}
+
+#instructionSelector QAbstractItemView {
+    background-color: #222831;
+    border: 1px solid #948979;
+    color: #DFD0B8;
+    selection-background-color: #393E46;
+}
+
+#instructionInput {
+    background-color: #222831;
+    border: 1px solid #948979;
+    border-radius: 3px;
+    color: #DFD0B8;
+    padding: 5px 7px;
+}
+
+#instructionInput:disabled {
+    border-color: #514d47;
+    color: #948979;
+}
+
+#programStatus {
+    color: #948979;
+    font-size: 11px;
+}
+
+#stopButton {
+    background-color: #3a1e20;
+    border-color: #a34b4c;
+    color: #f07e7e;
+}
+
+#stopButton:hover {
+    background-color: #51272a;
+}
+
+#robotView {
+    background-color: #222831;
+    border: 1px dashed #948979;
+}
+
+#robotViewTitle {
+    color: #DFD0B8;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#robotViewStatus {
+    color: #948979;
+    font-size: 12px;
+}
+
 #bottomStatusBar {
     background-color: #393E46;
     border-top: 1px solid #948979;
