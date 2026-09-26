@@ -479,7 +479,7 @@
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.3,
+        "clearance": 0.25,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -497,7 +497,7 @@
         "wire_width": 6
       },
       {
-        "clearance": 0.3,
+        "clearance": 0.25,
         "name": "Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
@@ -681,7 +681,7 @@
         "uuid": "b811b567-d5fa-4982-b852-d277d0614258"
       }
     ],
-    "used_designators": "C3",
+    "used_designators": "R2",
     "variants": []
   },
   "sheets": [

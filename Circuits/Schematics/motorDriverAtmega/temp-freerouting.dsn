@@ -1,0 +1,352 @@
+(pcb "C:\Users\User\Desktop\LebowskiBot\Circuits\Schematics\motorDriver\temp-freerouting.dsn"
+  (parser
+    (string_quote ")
+    (space_in_quoted_tokens on)
+    (host_cad "KiCad's Pcbnew")
+    (host_version "10.0.1")
+  )
+  (resolution um 10)
+  (unit um)
+  (structure
+    (layer F.Cu
+      (type signal)
+      (property
+        (index 0)
+      )
+    )
+    (layer B.Cu
+      (type signal)
+      (property
+        (index 1)
+      )
+    )
+    (boundary
+      (path pcb 0  168747 -125570  131625 -125570  131625 -77456.8  168747 -77456.8
+            168747 -125570)
+    )
+    (via "Via[0-1]_600:300_um")
+    (rule
+      (width 200)
+      (clearance 200)
+      (clearance 50 (type smd_smd))
+    )
+  )
+  (placement
+    (component Module:Arduino_Nano
+      (place A2 133180 -83385 front 0 (PN Arduino_Nano_Every))
+    )
+    (component "Module:Pololu_Breakout-16_15.2x20.3mm"
+      (place A1 152510 -80845 front 0 (PN Pololu_Breakout_DRV8825))
+    )
+    (component "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+      (place U1 154680 -104030 front 0 (PN MAX485E))
+    )
+  )
+  (library
+    (image Module:Arduino_Nano
+      (outline (polygon signal 0  16745 -42155  -1525 -42155  -1525 4055  16745 4055))
+      (outline (path signal 100  16510 -39370  -1270 -39370))
+      (outline (path signal 100  16510 3810  16510 -39370))
+      (outline (path signal 100  11430 -41910  3810 -41910))
+      (outline (path signal 100  11430 -31750  11430 -41910))
+      (outline (path signal 100  3810 -41910  3810 -31750))
+      (outline (path signal 100  3810 -31750  11430 -31750))
+      (outline (path signal 100  0 3810  16510 3810))
+      (outline (path signal 100  -1270 -39370  -1270 2540))
+      (outline (path signal 100  -1270 2540  0 3810))
+      (outline (path signal 120  16640 -39500  16640 3940))
+      (outline (path signal 120  16640 -39500  11560 -39500))
+      (outline (path signal 120  16640 3940  -1400 3940))
+      (outline (path signal 120  13970 -36830  16640 -36830))
+      (outline (path signal 120  13970 1270  16640 1270))
+      (outline (path signal 120  13970 1270  13970 -36830))
+      (outline (path signal 120  11560 -42040  3680 -42040))
+      (outline (path signal 120  11560 -31620  11560 -42040))
+      (outline (path signal 120  3680 -42040  3680 -31620))
+      (outline (path signal 120  3680 -31620  11560 -31620))
+      (outline (path signal 120  1270 -36830  -1400 -36830))
+      (outline (path signal 120  1270 -1270  1270 -36830))
+      (outline (path signal 120  1270 -1270  1270 1270))
+      (outline (path signal 120  1270 -1270  -1400 -1270))
+      (outline (path signal 120  1270 1270  -1400 1270))
+      (outline (path signal 120  -1400 -39500  3680 -39500))
+      (outline (path signal 120  -1400 -1270  -1400 -39500))
+      (outline (path signal 120  -1400 3940  -1400 1270))
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 30 15240 0)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 29 15240 -2540)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 28 15240 -5080)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 27 15240 -7620)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 26 15240 -10160)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 25 15240 -12700)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 24 15240 -15240)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 23 15240 -17780)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 22 15240 -20320)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 21 15240 -22860)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 20 15240 -25400)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 19 15240 -27940)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 18 15240 -30480)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 17 15240 -33020)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 16 15240 -35560)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 15 0 -35560)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 14 0 -33020)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 13 0 -30480)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 12 0 -27940)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 11 0 -25400)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 10 0 -22860)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 9 0 -20320)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 8 0 -17780)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 7 0 -15240)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 6 0 -12700)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 5 0 -10160)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 4 0 -7620)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 3 0 -5080)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 2 0 -2540)
+      (pin Rect[A]Pad_1600.000000x1600.000000_um 1 0 0)
+    )
+    (image "Module:Pololu_Breakout-16_15.2x20.3mm"
+      (outline (polygon signal 0  14205 -19295  -1525 -19295  -1525 1515  14205 1515))
+      (outline (path signal 100  13970 -19050  -1270 -19050))
+      (outline (path signal 100  13970 1270  13970 -19050))
+      (outline (path signal 100  0 1270  13970 1270))
+      (outline (path signal 100  -1270 -19050  -1270 0))
+      (outline (path signal 100  -1270 0  0 1270))
+      (outline (path signal 120  14100 -19180  14100 1400))
+      (outline (path signal 120  14100 1400  1270 1400))
+      (outline (path signal 120  11430 1400  11430 -19180))
+      (outline (path signal 120  1270 -1270  1270 -19180))
+      (outline (path signal 120  1270 -1270  -1400 -1270))
+      (outline (path signal 120  1270 1400  1270 -1270))
+      (outline (path signal 120  0 1400  -1400 1400))
+      (outline (path signal 120  -1400 -19180  14100 -19180))
+      (outline (path signal 120  -1400 -1270  -1400 -19180))
+      (outline (path signal 120  -1400 1400  -1400 0))
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 16 12700 0)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 15 12700 -2540)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 14 12700 -5080)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 13 12700 -7620)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 12 12700 -10160)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 11 12700 -12700)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 10 12700 -15240)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 9 12700 -17780)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 8 0 -17780)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 7 0 -15240)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 6 0 -12700)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 5 0 -10160)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 4 0 -7620)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 3 0 -5080)
+      (pin Oval[A]Pad_1600.000000x1600.000000_um 2 0 -2540)
+      (pin Rect[A]Pad_1600.000000x1600.000000_um 1 0 0)
+    )
+    (image "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+      (outline (polygon signal 0  2195 2455  3695 2455  3695 -2455  2195 -2455  2195 -2695
+            -2195 -2695  -2195 -2455  -3695 -2455  -3695 2455  -2195 2455
+            -2195 2695  2195 2695))
+      (outline (path signal 120  2060 -2560  -2060 -2560))
+      (outline (path signal 120  2060 -2465  2060 -2560))
+      (outline (path signal 120  2060 2560  2060 2465))
+      (outline (path signal 120  -2060 -2560  -2060 -2465))
+      (outline (path signal 120  -2060 2465  -2060 2560))
+      (outline (path signal 120  -2060 2560  2060 2560))
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 8 2475 1905)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 7 2475 635)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 6 2475 -635)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 5 2475 -1905)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 4 -2475 -1905)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 3 -2475 -635)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 2 -2475 635)
+      (pin RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0 1 -2475 1905)
+    )
+    (padstack Oval[A]Pad_1600.000000x1600.000000_um
+      (shape (path F.Cu 1600  0 0  0 0))
+      (shape (path B.Cu 1600  0 0  0 0))
+      (attach off)
+    )
+    (padstack RoundRect[T]Pad_1950.000000x600.000000_150.571000_um_0.000000_0
+      (shape (polygon F.Cu 0  -975.571 150  -964.109 207.621  -931.47 256.47  -882.621 289.109
+            -824.999 300.57  825 300.571  882.621 289.109  931.47 256.47
+            964.109 207.621  975.57 149.999  975.571 -150  964.109 -207.621
+            931.47 -256.47  882.621 -289.109  824.999 -300.57  -825 -300.571
+            -882.621 -289.109  -931.47 -256.47  -964.109 -207.621  -975.57 -149.999
+            -975.571 150))
+      (attach off)
+    )
+    (padstack Rect[A]Pad_1600.000000x1600.000000_um
+      (shape (rect F.Cu -800 -800 800 800))
+      (shape (rect B.Cu -800 -800 800 800))
+      (attach off)
+    )
+    (padstack "Via[0-1]_600:300_um"
+      (shape (circle F.Cu 600))
+      (shape (circle B.Cu 600))
+      (attach off)
+    )
+  )
+  (network
+    (net "unconnected-(A1-~{SLP}-Pad14)"
+      (pins A1-14)
+    )
+    (net "unconnected-(A1-GND-Pad7)"
+      (pins A1-7)
+    )
+    (net "unconnected-(A1-B2-Pad6)"
+      (pins A1-6)
+    )
+    (net "unconnected-(A1-STEP-Pad15)"
+      (pins A1-15)
+    )
+    (net "unconnected-(A1-B1-Pad5)"
+      (pins A1-5)
+    )
+    (net "unconnected-(A1-A2-Pad3)"
+      (pins A1-3)
+    )
+    (net "unconnected-(A1-~{RST}-Pad13)"
+      (pins A1-13)
+    )
+    (net "unconnected-(A1-M1-Pad11)"
+      (pins A1-11)
+    )
+    (net "unconnected-(A1-~{EN}-Pad9)"
+      (pins A1-9)
+    )
+    (net "unconnected-(A1-M2-Pad12)"
+      (pins A1-12)
+    )
+    (net MOTOR_PWR
+      (pins A1-8)
+    )
+    (net "unconnected-(A1-M0-Pad10)"
+      (pins A1-10)
+    )
+    (net "unconnected-(A1-~{FLT}-Pad2)"
+      (pins A1-2)
+    )
+    (net "unconnected-(A1-DIR-Pad16)"
+      (pins A1-16)
+    )
+    (net "unconnected-(A1-GND-Pad1)"
+      (pins A1-1)
+    )
+    (net "unconnected-(A1-A1-Pad4)"
+      (pins A1-4)
+    )
+    (net "unconnected-(A2-D3-Pad6)"
+      (pins A2-6)
+    )
+    (net GND_LOGIC
+      (pins A2-29 A2-4 U1-5)
+    )
+    (net LOGIC_5V
+      (pins A2-27 U1-8)
+    )
+    (net "unconnected-(A2-SDA{slash}A4-Pad23)"
+      (pins A2-23)
+    )
+    (net "unconnected-(A2-A1-Pad20)"
+      (pins A2-20)
+    )
+    (net "Net-(A2-TX1)"
+      (pins A2-1 U1-4)
+    )
+    (net "Net-(A2-RX1)"
+      (pins A2-2 U1-1)
+    )
+    (net "unconnected-(A2-3V3-Pad17)"
+      (pins A2-17)
+    )
+    (net "unconnected-(A2-VIN-Pad30)"
+      (pins A2-30)
+    )
+    (net "unconnected-(A2-MISO-Pad15)"
+      (pins A2-15)
+    )
+    (net "unconnected-(A2-D7-Pad10)"
+      (pins A2-10)
+    )
+    (net "unconnected-(A2-A7-Pad26)"
+      (pins A2-26)
+    )
+    (net "unconnected-(A2-SCK-Pad16)"
+      (pins A2-16)
+    )
+    (net "unconnected-(A2-A3-Pad22)"
+      (pins A2-22)
+    )
+    (net "unconnected-(A2-A6-Pad25)"
+      (pins A2-25)
+    )
+    (net "unconnected-(A2-SCL{slash}A5-Pad24)"
+      (pins A2-24)
+    )
+    (net "unconnected-(A2-A2-Pad21)"
+      (pins A2-21)
+    )
+    (net "unconnected-(A2-~{RESET}-Pad3)"
+      (pins A2-3)
+    )
+    (net "unconnected-(A2-~{RESET}-Pad28)"
+      (pins A2-28)
+    )
+    (net "unconnected-(A2-D10-Pad13)"
+      (pins A2-13)
+    )
+    (net "unconnected-(A2-AREF-Pad18)"
+      (pins A2-18)
+    )
+    (net "unconnected-(A2-A0-Pad19)"
+      (pins A2-19)
+    )
+    (net "unconnected-(A2-D9-Pad12)"
+      (pins A2-12)
+    )
+    (net "unconnected-(A2-D6-Pad9)"
+      (pins A2-9)
+    )
+    (net "Net-(A2-D4)"
+      (pins A2-7 U1-3 U1-2)
+    )
+    (net "unconnected-(A2-D2-Pad5)"
+      (pins A2-5)
+    )
+    (net "unconnected-(A2-MOSI-Pad14)"
+      (pins A2-14)
+    )
+    (net "unconnected-(A2-D5-Pad8)"
+      (pins A2-8)
+    )
+    (net "unconnected-(A2-D8-Pad11)"
+      (pins A2-11)
+    )
+    (net "unconnected-(U1-B-Pad7)"
+      (pins U1-7)
+    )
+    (net "unconnected-(U1-A-Pad6)"
+      (pins U1-6)
+    )
+    (class kicad_default GND_LOGIC LOGIC_5V MOTOR_PWR "Net-(A2-D4)" "Net-(A2-RX1)"
+      "Net-(A2-TX1)" "unconnected-(A1-A1-Pad4)" "unconnected-(A1-A2-Pad3)"
+      "unconnected-(A1-B1-Pad5)" "unconnected-(A1-B2-Pad6)" "unconnected-(A1-DIR-Pad16)"
+      "unconnected-(A1-GND-Pad1)" "unconnected-(A1-GND-Pad7)" "unconnected-(A1-M0-Pad10)"
+      "unconnected-(A1-M1-Pad11)" "unconnected-(A1-M2-Pad12)" "unconnected-(A1-STEP-Pad15)"
+      "unconnected-(A1-~{EN}-Pad9)" "unconnected-(A1-~{FLT}-Pad2)" "unconnected-(A1-~{RST}-Pad13)"
+      "unconnected-(A1-~{SLP}-Pad14)" "unconnected-(A2-3V3-Pad17)" "unconnected-(A2-A0-Pad19)"
+      "unconnected-(A2-A1-Pad20)" "unconnected-(A2-A2-Pad21)" "unconnected-(A2-A3-Pad22)"
+      "unconnected-(A2-A6-Pad25)" "unconnected-(A2-A7-Pad26)" "unconnected-(A2-AREF-Pad18)"
+      "unconnected-(A2-D10-Pad13)" "unconnected-(A2-D2-Pad5)" "unconnected-(A2-D3-Pad6)"
+      "unconnected-(A2-D5-Pad8)" "unconnected-(A2-D6-Pad9)" "unconnected-(A2-D7-Pad10)"
+      "unconnected-(A2-D8-Pad11)" "unconnected-(A2-D9-Pad12)" "unconnected-(A2-MISO-Pad15)"
+      "unconnected-(A2-MOSI-Pad14)" "unconnected-(A2-SCK-Pad16)" "unconnected-(A2-SCL{slash}A5-Pad24)"
+      "unconnected-(A2-SDA{slash}A4-Pad23)" "unconnected-(A2-VIN-Pad30)" "unconnected-(A2-~{RESET}-Pad28)"
+      "unconnected-(A2-~{RESET}-Pad3)" "unconnected-(U1-A-Pad6)" "unconnected-(U1-B-Pad7)"
+      (circuit
+        (use_via "Via[0-1]_600:300_um")
+      )
+      (rule
+        (width 200)
+        (clearance 200)
+      )
+    )
+  )
+  (wiring
+  )
+)
