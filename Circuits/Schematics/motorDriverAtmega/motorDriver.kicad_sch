@@ -3922,12 +3922,6 @@
 		(uuid "2b1f5fe6-e1cc-46b8-b1db-d8241407c91d")
 	)
 	(junction
-		(at 83.82 58.42)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2f0427ca-a871-4fd6-9f25-10422b45c1ad")
-	)
-	(junction
 		(at 81.28 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5841,7 +5835,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22pF"
+		(property "Value" "18pF"
 			(at 134.62 81.2799 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5983,85 +5977,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 83.82 58.42 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "45273283-4cde-4057-9e4d-8ae2e83bd208")
-		(property "Reference" "#FLG01"
-			(at 81.915 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 80.01 58.4199 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 83.82 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 83.82 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 83.82 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4f303e69-6550-4a15-925f-ac3ec00c0ec1")
-		)
-		(instances
-			(project "motorDriver"
-				(path "/b811b567-d5fa-4982-b852-d277d0614258"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 57.15 105.41 0)
 		(unit 1)
@@ -6178,7 +6093,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
 			(at 243.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6793,7 +6708,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
 			(at 194.31 53.848 90)
 			(hide yes)
 			(show_name no)
@@ -7612,7 +7527,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22pF"
+		(property "Value" "18pF"
 			(at 151.13 81.2799 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7847,6 +7762,85 @@
 			(project "motorDriver"
 				(path "/b811b567-d5fa-4982-b852-d277d0614258"
 					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 237.49 125.73 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fc3bf1c5-5a0c-49ce-b2a5-ff64d7f2134e")
+		(property "Reference" "#FLG01"
+			(at 237.49 127.635 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 237.49 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 237.49 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 237.49 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 237.49 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dc355bc2-9270-4a8a-8bef-5e81f42fff23")
+		)
+		(instances
+			(project "motorDriver"
+				(path "/b811b567-d5fa-4982-b852-d277d0614258"
+					(reference "#FLG01")
 					(unit 1)
 				)
 			)
