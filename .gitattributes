@@ -31,3 +31,36 @@
 *.pdf binary
 *.png binary
 *.xlsx binary
+
+# ============================================================
+# Lebowski CAD Files
+# ============================================================
+
+# SolidWorks
+*.SLDPRT -text
+*.SLDASM -text
+*.SLDDRW -text
+
+# STEP / STP
+*.STEP -text
+*.step -text
+*.STP -text
+*.stp -text
+
+# STL
+*.STL -text
+*.stl -text
+
+# DXF
+*.DXF -text
+*.dxf -text
+
+# IGES
+*.IGES -text
+*.iges -text
+*.IGS -text
+*.igs -text
+
+# 3MF
+*.3MF -text
+*.3mf -text
