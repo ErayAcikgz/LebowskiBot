@@ -41,7 +41,7 @@
         "pads": {
           "drill": 0.8,
           "height": 1.27,
-          "width": 1.27
+          "width": 2.54
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -50,23 +50,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "border_display_style": 2,
-          "border_hatch_pitch": 0.5,
-          "corner_radius": 0.0,
-          "corner_smoothing": 0,
-          "fill_mode": 0,
-          "hatch_gap": 1.5,
-          "hatch_orientation": 0.0,
-          "hatch_smoothing_level": 0,
-          "hatch_smoothing_value": 0.1,
-          "hatch_thickness": 1.0,
-          "min_clearance": 0.5,
-          "min_island_area": 10.0,
-          "min_thickness": 0.25,
-          "pad_connection": 1,
-          "remove_islands": 0,
-          "thermal_relief_gap": 0.5,
-          "thermal_relief_spoke_width": 0.5
+          "min_clearance": 0.5
         }
       },
       "diff_pair_dimensions": [],
@@ -488,7 +472,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "KiCad.kicad_pro",
+    "filename": "masterController.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -526,7 +510,6 @@
       "netlist": "",
       "plot": "",
       "specctra_dsn": "",
-      "step": "",
       "vrml": ""
     },
     "page_layout_descr_file": ""
@@ -644,50 +627,18 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "KiCad.kicad_sch",
-        "name": "00_SYSTEM",
-        "uuid": "c15a5ead-c9b6-4302-96cb-0cea8ac8d91c"
+        "filename": "masterController.kicad_sch",
+        "name": "Root",
+        "uuid": "c0d838c5-0cf5-41ce-a6b6-38e74c968947"
       }
     ],
-    "used_designators": "#PWR1-5,U1-2,F1-2,M1,A1-2,C1-2,R1-2,J1",
+    "used_designators": "D2,#PWR1,#PWR4-8,#PWR11,#PWR15-22,U3,R1-2,R6-7,#FLG4-7,J1-3,SW1-2,C1-6,C8-9,C13-16,F2,K1",
     "variants": []
   },
   "sheets": [
     [
-      "c15a5ead-c9b6-4302-96cb-0cea8ac8d91c",
-      "00_SYSTEM"
-    ],
-    [
-      "3d9862b1-cdd6-42ab-8cf7-e56f85cd6c23",
-      "01_POWER"
-    ],
-    [
-      "1246fd68-e73a-4085-846a-66239a10b3d2",
-      "02_MASTER_CONTROLLER"
-    ],
-    [
-      "3cb8e467-69b8-411e-a5fb-51407a29f240",
-      "03_SERVO_DRIVER"
-    ],
-    [
-      "836574b5-d847-4e17-a41d-019d09409f1b",
-      "08_PC_INTEFACE"
-    ],
-    [
-      "b0d0d93c-d3e9-4c83-b20b-74d54694e4e8",
-      "05_COMMUNICATION"
-    ],
-    [
-      "0fbb8649-ef34-4a22-9bce-78855c54c829",
-      "09_SAFETY"
-    ],
-    [
-      "512f3945-676f-4dfb-afc3-4a82ab9dfae9",
-      "06_DIGITAL_IO"
-    ],
-    [
-      "fe5d5d0b-d87c-4056-9b09-e3275886210d",
-      "07_LIMIT_HOME"
+      "c0d838c5-0cf5-41ce-a6b6-38e74c968947",
+      "Root"
     ]
   ],
   "text_variables": {},
