@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "LebowskiBotCustomLibrary") (type "KiCad") (uri "C:/Users/User/Desktop/LebowskiBot/Circuits/Schematics/LebowskiBotCustomLibrary.pretty") (options "") (descr ""))
+)

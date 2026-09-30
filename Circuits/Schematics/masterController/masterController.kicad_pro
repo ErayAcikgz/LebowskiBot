@@ -53,8 +53,31 @@
           "min_clearance": 0.5
         }
       },
-      "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
+      "drc_exclusions": [
+        [
+          "unconnected_items|106250000|51325000|F.Cu|4|ca102763-22a8-4884-90b3-a93b42968023|0f8c64f7-e866-4970-a942-1de14a35547e",
+          "3.3V Converter Internal Connection"
+        ],
+        [
+          "unconnected_items|124315000|34620000|F.Cu|4|780f3af9-3cb4-48cd-a11c-3393091a3489|2b4ccd94-e253-4b36-bf5b-d94a93b8eda1",
+          "Reset Button Internal Connection"
+        ],
+        [
+          "unconnected_items|128815000|34620000|F.Cu|4|f3d0aa33-c117-469b-b517-a9c31113121d|0d596b03-48e6-4eee-9d0d-7a2e12eef092",
+          "Reset Button Internal Connection"
+        ],
+        [
+          "unconnected_items|95825000|63225000|F.Cu|4|597f1ea7-a1c5-429a-aa0a-a6e0b2fd0a8f|1bc73b98-e645-4a59-a72f-0188f42fb5aa",
+          "3.3V Converter Internal Connection"
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -124,7 +147,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.0,
+        "min_clearance": 0.2,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
@@ -137,7 +160,7 @@
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.2,
+        "min_track_width": 0.25,
         "min_via_annular_width": 0.1,
         "min_via_diameter": 0.5,
         "solder_mask_to_copper_clearance": 0.0,
@@ -187,7 +210,9 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -214,7 +239,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -495,6 +525,20 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "bus_width": 24,
+        "clearance": 0.5,
+        "line_style": 1,
+        "name": "Power",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 4.5,
+        "tuning_profile": "",
+        "via_diameter": 2.0,
+        "via_drill": 1.0,
+        "wire_width": 12
       }
     ],
     "meta": {
@@ -502,7 +546,20 @@
     },
     "net_colors": null,
     "netclass_assignments": null,
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "Power",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/VIN_SECURE"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "VDD"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -632,7 +689,7 @@
         "uuid": "c0d838c5-0cf5-41ce-a6b6-38e74c968947"
       }
     ],
-    "used_designators": "J1-4,R1-8,#FLG1-5,D1,#PWR1-23,K1,C1-16,F1-2,L1,SW1,U1-4",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [

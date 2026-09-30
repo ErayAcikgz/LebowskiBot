@@ -85,6 +85,7 @@
 		)
 		(capping no)
 		(filling no)
+		(zone_defaults)
 		(pcbplotparams
 			(layerselection 0x00000000_00000000_55555555_575555ff)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
@@ -395,7 +396,7 @@
 		(property "Reference" "C5"
 			(at 0.25 2.15 0)
 			(layer "F.SilkS")
-			(uuid "217d79de-4862-4834-8054-834ffe5809fe")
+			(uuid "06de38de-23f0-4cea-8b26-f7b075f91d4c")
 			(effects
 				(font
 					(size 1 1)
@@ -407,7 +408,7 @@
 			(at 0 1.68 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "72ddb690-0cfe-484c-9614-8d9cbf4036ba")
+			(uuid "1fc21ba6-10bd-4543-9e7c-30ce892165fd")
 			(effects
 				(font
 					(size 1 1)
@@ -419,7 +420,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "239fde0f-c700-4756-9e85-46d0c9e413eb")
+			(uuid "1808f7f8-61a9-4df1-bbf7-2d55d90c3dde")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -430,7 +431,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "7aadf9fe-c03f-4e4c-a609-454e90cd5787")
+			(uuid "28b494d3-43c6-4a87-a64f-f0165b1b1164")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2410,7 +2411,7 @@
 		(property "Reference" "C6"
 			(at -3.3 0.25 180)
 			(layer "F.SilkS")
-			(uuid "f651c210-e5e1-477b-a7a8-09db1d91e9a5")
+			(uuid "e5405162-218f-47f2-b005-849b421887b4")
 			(effects
 				(font
 					(size 1 1)
@@ -2422,7 +2423,7 @@
 			(at 0 1.68 90)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "0a36bb5f-9ce9-445d-83bc-547d8355adce")
+			(uuid "e2c9ded0-db14-4ef4-87f1-6fa76198d5e1")
 			(effects
 				(font
 					(size 1 1)
@@ -2434,7 +2435,7 @@
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "74ead0f5-d834-499a-8515-79ad282d41d0")
+			(uuid "b871595b-18a6-4993-9598-ecf96b2950f3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2445,7 +2446,7 @@
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "694906c7-6a60-42d4-83d1-a398b0e7aa7f")
+			(uuid "8f05aa76-a99b-4b05-824a-82d7e7a5bfe3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6044,14 +6045,6 @@
 		(uuid "65434cfd-0a1f-40db-940a-c39102463c02")
 	)
 	(segment
-		(start 106.7125 68.425)
-		(end 106.7125 65.4875)
-		(width 0.25)
-		(layer "B.Cu")
-		(net "+5V")
-		(uuid "a8140277-d358-49bd-aa3e-f4742b245c21")
-	)
-	(segment
 		(start 102.55 62.14)
 		(end 102.61 62.14)
 		(width 0.25)
@@ -6090,14 +6083,6 @@
 		(layer "B.Cu")
 		(net "+5V")
 		(uuid "d907479b-e1c3-4ab8-be47-b66aec4dd927")
-	)
-	(segment
-		(start 106.7125 65.4875)
-		(end 111.85 60.35)
-		(width 0.25)
-		(layer "B.Cu")
-		(net "+5V")
-		(uuid "ddf20ed0-ea12-4437-9dd0-e7295539eac3")
 	)
 	(segment
 		(start 113.77 49.03)
